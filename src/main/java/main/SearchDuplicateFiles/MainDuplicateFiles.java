@@ -38,7 +38,7 @@ public class MainDuplicateFiles {
         String directory = scanner.nextLine();
         System.out.println(directory);
 
-        DuplicateFiles duplicateFiles = new DuplicateFiles(fileType);
-        duplicateFiles.processFiles(directory);
+        // DuplicateFiles duplicateFiles = new DuplicateFiles(fileType);
+        // duplicateFiles.processFiles(directory);
     }
 }

@@ -13,12 +13,12 @@ import java.util.Map;
 /**
  * Исполняющая функция поиска дубликатов файлов
  */
-public class DuplicateFiles {
+public class DuplicateFilesContent {
 
     private final FileType fileType;
     private final List<String> systemDirectories;
 
-    public DuplicateFiles(FileType fileType) {
+    public DuplicateFilesContent(FileType fileType) {
         this.fileType = fileType;
         this.systemDirectories = getSystemDirectories();
     }

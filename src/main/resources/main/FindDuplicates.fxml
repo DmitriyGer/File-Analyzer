@@ -56,13 +56,13 @@
       </Label>
       <ChoiceBox fx:id="choiceDataType" layoutX="16.0" layoutY="208.0" prefHeight="26.0" prefWidth="280.0" />
       <Button fx:id="btnStartSearch" layoutX="406.0" layoutY="209.0" mnemonicParsing="false" onAction="#btnStartSearch" prefHeight="26.0" prefWidth="138.0" text="Начать поиск" />
-      <TableView layoutY="262.0" prefHeight="388.0" prefWidth="774.0" tableMenuButtonVisible="true">
+      <TableView fx:id="tableView" layoutX="4.0" layoutY="262.0" prefHeight="388.0" prefWidth="768.0" tableMenuButtonVisible="true">
         <columns>
-          <TableColumn prefWidth="35.19998246431351" text="№" />
-          <TableColumn prefWidth="115.20000839233398" text="Название" />
-            <TableColumn prefWidth="116.00001525878906" text="Вид" />
-            <TableColumn prefWidth="396.79998779296875" text="Путь" />
-            <TableColumn minWidth="0.0" prefWidth="109.5999755859375" text="Размер" />
+          <TableColumn fx:id="tableNumber" prefWidth="35.19998246431351" text="№" />
+          <TableColumn fx:id="tableName" prefWidth="115.20000839233398" text="Название" />
+            <TableColumn fx:id="tableImage" prefWidth="116.00001525878906" text="Вид" />
+            <TableColumn fx:id="tableWay" prefWidth="396.79998779296875" text="Путь" />
+            <TableColumn fx:id="tableSize" minWidth="0.0" prefWidth="109.5999755859375" text="Размер" />
         </columns>
       </TableView>
    </children>
