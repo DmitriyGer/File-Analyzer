@@ -1,7 +1,17 @@
 package main;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -16,7 +26,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
@@ -50,23 +60,23 @@ public class FindDuplicatesController {
 
     @FXML
     private TableView<FileInfo> tableView;
-    
-    @FXML
-    private TableColumn<FileInfo, Integer> columnIndex;
-    
-    @FXML
-    private TableColumn<FileInfo, String> columnFileName;
-    
-    @FXML
-    private TableColumn<FileInfo, ImageView> columnFileType;
-    
-    @FXML
-    private TableColumn<FileInfo, String> columnFilePath;
-    
-    @FXML
-    private TableColumn<FileInfo, Long> columnFileSize;
 
-    private ObservableList<FileInfo> data = FXCollections.observableArrayList();
+    @FXML
+    private TableColumn<FileInfo, Integer> tableNumber;
+
+    @FXML
+    private TableColumn<FileInfo, String> tableName;
+
+    @FXML
+    private TableColumn<FileInfo, ImageView> tableImage;
+
+    @FXML
+    private TableColumn<FileInfo, String> tableWay;
+
+    @FXML
+    private TableColumn<FileInfo, Long> tableSize;
+
+    private ObservableList<FileInfo> fileDataList = FXCollections.observableArrayList();
 
     @FXML
     private TextField textWay;
@@ -140,10 +150,94 @@ public class FindDuplicatesController {
             return;
         }
 
-        // Создание и запуск процессора поиска дубликатов
-        DuplicateFilesProcessor processor = new DuplicateFilesProcessor(fileType, nameSelected, sizeSelected, contentSelected);
-        processor.processFiles(directoryPath);
+        fileDataList.clear();
+        findDuplicates(new File(directoryPath));
 
+        // Создание и запуск процессора поиска дубликатов
+        // DuplicateFilesProcessor processor = new DuplicateFilesProcessor(fileType, nameSelected, sizeSelected, contentSelected);
+        // processor.processFiles(directoryPath);
+
+
+
+    }
+
+    /**
+     * Функция для поиска дуюликатов по содержимому
+     * @param directory
+     */
+    private void findDuplicates(File directory) {
+        Map<String, List<File>> fileMap = new HashMap<>();
+        scanDirectory(directory, fileMap);
+
+        int index = 1;
+        for (List<File> files : fileMap.values()) {
+            if (files.size() > 1) {
+                for (File file : files) {
+                    ImageView imageView = createImageView(file);
+                    imageView.setOnMouseClicked(event -> openFile(file));
+                    fileDataList.add(new FileInfo(index++, file.getName(), imageView, file.getAbsolutePath(), file.length()));
+                }
+            }
+        }
+    }
+
+    /**
+     * Сканирование директорий при помощи хэш
+     * @param directory
+     * @param fileMap
+     */
+    private void scanDirectory(File directory, Map<String, List<File>> fileMap) {
+        if (directory.isDirectory()) {
+            for (File file : Objects.requireNonNull(directory.listFiles())) {
+                if (file.isDirectory()) {
+                    scanDirectory(file, fileMap);
+                } else {
+                    try {
+                        String hash = generateFileHash(file);
+                        fileMap.computeIfAbsent(hash, k -> new ArrayList<>()).add(file);
+                    } catch (IOException | NoSuchAlgorithmException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
+    private String generateFileHash(File file) throws IOException, NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("MD5");
+        byte[] fileBytes = Files.readAllBytes(file.toPath());
+        byte[] hashBytes = digest.digest(fileBytes);
+        StringBuilder sb = new StringBuilder();
+        for (byte b : hashBytes) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    }
+
+    private ImageView createImageView(File file) {
+        ImageView imageView;
+        if (isImageFile(file)) {
+            Image image = new Image(file.toURI().toString(), 50, 50, true, true);
+            imageView = new ImageView(image);
+        } else {
+            Image image = new Image(getClass().getResourceAsStream("/thumbnails/default.png"), 50, 50, true, true);
+            imageView = new ImageView(image);
+        }
+        return imageView;
+    }
+
+    private boolean isImageFile(File file) {
+        String[] imageExtensions = {"jpg", "jpeg", "png", "bmp", "gif"};
+        String fileName = file.getName().toLowerCase();
+        return Arrays.stream(imageExtensions).anyMatch(fileName::endsWith);
+    }
+
+    private void openFile(File file) {
+        try {
+            new ProcessBuilder("cmd", "/c", file.getAbsolutePath()).start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private FileType getFileType(String dataType) {
@@ -173,12 +267,12 @@ public class FindDuplicatesController {
     void initialize() {
         choiceDataType.getItems().addAll("Медиа файлы", "Документы", "Все поддерживаемые файлы");
 
-        columnIndex.setCellValueFactory(new PropertyValueFactory<>("index"));
-        columnFileName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        columnFileType.setCellValueFactory(new PropertyValueFactory<>("type"));
-        columnFilePath.setCellValueFactory(new PropertyValueFactory<>("path"));
-        columnFileSize.setCellValueFactory(new PropertyValueFactory<>("size"));
-        tableView.setItems(data);
+        tableNumber.setCellValueFactory(cellData -> cellData.getValue().numberProperty().asObject());
+        tableName.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+        tableImage.setCellValueFactory(cellData -> cellData.getValue().imageViewProperty());
+        tableWay.setCellValueFactory(cellData -> cellData.getValue().pathProperty());
+        tableSize.setCellValueFactory(cellData -> cellData.getValue().sizeProperty().asObject());
+        tableView.setItems(fileDataList);
     }
     
 }
