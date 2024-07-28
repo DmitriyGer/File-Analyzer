@@ -1,17 +1,7 @@
 package main;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -25,8 +15,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
@@ -128,11 +116,11 @@ public class FindDuplicatesController {
     @FXML
     void btnStartSearch(ActionEvent event) {
 
-        // Проверка выбора параметров поиска
         boolean nameSelected = checkName.isSelected();
         boolean sizeSelected = checkSize.isSelected();
         boolean contentSelected = checkContent.isSelected();
 
+        // Проверка выбора параметров поиска
         if (!nameSelected && !sizeSelected && !contentSelected) {
             showAlert("Ошибка", "Выберите параметры поиска");
             return;
@@ -157,14 +145,12 @@ public class FindDuplicatesController {
             showAlert("Ошибка", "Неправильный тип данных");
             return;
         }
-        
+
         // Создание и запуск процессора поиска дубликатов
         DuplicateFilesProcessor processor = new DuplicateFilesProcessor(fileType, nameSelected, sizeSelected, contentSelected);
         processor.processFiles(directoryPath);
 
     }
-
-    
 
     /**
      * Выбранный пользователем тип данных
@@ -198,6 +184,13 @@ public class FindDuplicatesController {
         alert.showAndWait();
     }
 
+    /**
+     * ДОРАБОТАТЬ МЕТОТ ИНИЦИАЛИЗАЦИИ
+     * 1. Реализовать функцию для очистки таблицы
+     * 2. Реализовать, чтобы данные обновлялись со всех трех файлов
+     * !!! 3. Доработать функцию для работы с документами !!!
+     * 4. Для реализации полноэкранногог режима переделать в SceneBuilder главное окно в BorderPane
+     */
     @FXML
     void initialize() {
         choiceDataType.getItems().addAll("Медиа файлы", "Документы", "Все поддерживаемые файлы");
@@ -207,7 +200,10 @@ public class FindDuplicatesController {
         tableImage.setCellValueFactory(cellData -> cellData.getValue().imageViewProperty());
         tableWay.setCellValueFactory(cellData -> cellData.getValue().pathProperty());
         tableSize.setCellValueFactory(cellData -> cellData.getValue().sizeProperty().asObject());
+        tableView.setItems(DuplicateFilesName.fileDataList);
         tableView.setItems(DuplicateFilesContent.fileDataList);
+        tableView.setItems(DuplicateFilesSize.fileDataList);
+        
     }
     
 }

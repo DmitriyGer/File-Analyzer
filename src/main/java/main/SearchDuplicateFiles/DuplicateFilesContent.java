@@ -36,6 +36,9 @@ public class DuplicateFilesContent extends FindDuplicatesController {
      * Проверки и исключения
      */
     public void processFiles(String directoryPath) {
+
+        // fileDataList.clear();
+
         File directory = new File(directoryPath);
         if (!directory.isDirectory()) {
             System.out.println("Указанный путь не является директорией.");
@@ -52,6 +55,7 @@ public class DuplicateFilesContent extends FindDuplicatesController {
             Map<String, List<File>> fileMap = new HashMap<>();
             findDuplicatesRecursive(directory, fileMap);
 
+            
             int index = 1;
             for (List<File> files : fileMap.values()) {
                 if (files.size() > 1) {
@@ -59,7 +63,7 @@ public class DuplicateFilesContent extends FindDuplicatesController {
                         ImageView imageView = createImageView(file);
                         imageView.setOnMouseClicked(event -> openFile(file));
                         fileDataList.add(new FileInfo(index++, file.getName(), imageView, file.getAbsolutePath(), file.length()));
-                        System.out.println("А вывод тусит тут");
+                        System.out.println("Вывод через хэш есть");
                         
                     }
                 }
