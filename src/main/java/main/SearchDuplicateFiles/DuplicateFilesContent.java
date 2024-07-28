@@ -6,14 +6,19 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import main.FindDuplicatesController;
+
 /**
  * Исполняющая функция поиска дубликатов файлов
  */
-public class DuplicateFilesContent {
+public class DuplicateFilesContent extends FindDuplicatesController {
 
     private final FileType fileType;
     private final List<String> systemDirectories;
@@ -23,6 +28,9 @@ public class DuplicateFilesContent {
         this.systemDirectories = getSystemDirectories();
     }
 
+    /**
+     * Проверки и исключения
+     */
     public void processFiles(String directoryPath) {
         File directory = new File(directoryPath);
         if (!directory.isDirectory()) {
@@ -35,17 +43,39 @@ public class DuplicateFilesContent {
             return;
         }
 
-        Map<String, List<FileInfo>> fileHashMap = new HashMap<>();
+        // Map<String, List<FileInfo>> fileHashMap = new HashMap<>();
         try {
-            findDuplicatesRecursive(directory, fileHashMap);
+            // findDuplicatesRecursive(directory, fileHashMap);
+
+            Map<String, List<File>> fileMap = new HashMap<>();
+            findDuplicatesRecursive(directory, fileMap);
+
+            int index = 1;
+            for (List<File> files : fileMap.values()) {
+                if (files.size() > 1) {
+                    for (File file : files) {
+                        ImageView imageView = createImageView(file);
+                        imageView.setOnMouseClicked(event -> openFile(file));
+                        fileDataList.add(new FileInfo(index++, file.getName(), imageView, file.getAbsolutePath(), file.length()));
+                        System.out.println("А вывод тусит тут");
+                    }
+                }
+            }
+            
         } catch (IOException | NoSuchAlgorithmException e) {
             System.out.println("Произошла ошибка при обработке файлов: " + e.getMessage());
         }
 
-        printDuplicates(fileHashMap);
     }
 
-    private void findDuplicatesRecursive(File directory, Map<String, List<FileInfo>> fileHashMap) throws IOException, NoSuchAlgorithmException {
+    /**
+     * Функция поиска дубликатов файлов
+     * @param directory
+     * @param fileHashMap
+     * @throws IOException
+     * @throws NoSuchAlgorithmException
+     */
+    private void findDuplicatesRecursive(File directory, Map<String, List<File>> fileHashMap) throws IOException, NoSuchAlgorithmException {
         File[] files = directory.listFiles();
 
         if (files == null) return;
@@ -60,14 +90,22 @@ public class DuplicateFilesContent {
                     findDuplicatesRecursive(file, fileHashMap);
                 }
             } else if (fileType.isMatch(file.getName())) {
+
                 String fileHash = getFileHash(file, digest);
 
-                FileInfo fileInfo = new FileInfo(file.getName(), file.getAbsolutePath(), file.length());
-                fileHashMap.computeIfAbsent(fileHash, k -> new ArrayList<>()).add(fileInfo);
+                fileHashMap.computeIfAbsent(fileHash, k -> new ArrayList<>()).add(file);
+                System.out.println("Хде вывод!?");
+
+                // FileInfo fileInfo = new FileInfo(file.getName(), file.getAbsolutePath(), file.length());
+                // fileHashMap.computeIfAbsent(fileHash, k -> new ArrayList<>()).add(fileInfo);
             }
         }
     }
 
+    /**
+     * Список системных директорий
+     * @return
+     */
     private List<String> getSystemDirectories() {
 
         String userName = System.getProperty("user.name");
@@ -85,6 +123,11 @@ public class DuplicateFilesContent {
         return systemDirs;
     }
 
+    /**
+     * Проверка на системные директории
+     * @param directory
+     * @return
+     */
     private boolean isSystemDirectory(File directory) {
         for (String systemPath : systemDirectories) {
             if (systemPath != null && directory.getAbsolutePath().startsWith(systemPath)) {
@@ -94,6 +137,11 @@ public class DuplicateFilesContent {
         return false;
     }
 
+    /**
+     * Вывод результатов сканирования в консоль
+     * @param fileHashMap
+     */
+    /*
     private void printDuplicates(Map<String, List<FileInfo>> fileHashMap) {
         for (Map.Entry<String, List<FileInfo>> entry : fileHashMap.entrySet()) {
             List<FileInfo> fileList = entry.getValue();
@@ -109,7 +157,15 @@ public class DuplicateFilesContent {
             }
         }
     }
+    */
 
+    /**
+     * Получить файловый хэш
+     * @param file
+     * @param digest
+     * @return
+     * @throws IOException
+     */
     private String getFileHash(File file, MessageDigest digest) throws IOException {
         FileInputStream fis = new FileInputStream(file);
         byte[] byteArray = new byte[1024];
@@ -128,5 +184,41 @@ public class DuplicateFilesContent {
         }
 
         return sb.toString();
+    }
+
+    /**
+     * Создание миниатюры для вывода изображения
+     * @param file
+     * @return
+     */
+    private ImageView createImageView(File file) {
+        ImageView imageView;
+        if (isImageFile(file)) {
+            Image image = new Image(file.toURI().toString(), 50, 50, true, true);
+            imageView = new ImageView(image);
+        } else {
+            Image image = new Image(getClass().getResourceAsStream("/thumbnails/default.png"), 50, 50, true, true);
+            imageView = new ImageView(image);
+        }
+        return imageView;
+    }
+
+    /**
+     * Проверка на тип данных
+     * @param file
+     * @return
+     */
+    private boolean isImageFile(File file) {
+        String[] imageExtensions = {"jpg", "jpeg", "png", "bmp", "gif"};
+        String fileName = file.getName().toLowerCase();
+        return Arrays.stream(imageExtensions).anyMatch(fileName::endsWith);
+    }
+
+    private void openFile(File file) {
+        try {
+            new ProcessBuilder("cmd", "/c", file.getAbsolutePath()).start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

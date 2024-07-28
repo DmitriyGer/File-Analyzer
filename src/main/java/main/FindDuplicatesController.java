@@ -76,7 +76,7 @@ public class FindDuplicatesController {
     @FXML
     private TableColumn<FileInfo, Long> tableSize;
 
-    private ObservableList<FileInfo> fileDataList = FXCollections.observableArrayList();
+    protected ObservableList<FileInfo> fileDataList = FXCollections.observableArrayList();
 
     @FXML
     private TextField textWay;
@@ -100,6 +100,10 @@ public class FindDuplicatesController {
         return false;
     }
 
+    /**
+     * Кнопка выбора директории
+     * @param event
+     */
     @FXML
     void btnChoosingDirectory(ActionEvent event) {
 
@@ -117,6 +121,10 @@ public class FindDuplicatesController {
 
     }
 
+    /**
+     * Кнопка запуска поиска дубликатов файлов
+     * @param event
+     */
     @FXML
     void btnStartSearch(ActionEvent event) {
 
@@ -162,7 +170,7 @@ public class FindDuplicatesController {
     }
 
     /**
-     * Функция для поиска дуюликатов по содержимому
+     * Функция для поиска дубликатов по содержимому и вывод резуьтатов
      * @param directory
      */
     private void findDuplicates(File directory) {
@@ -203,6 +211,13 @@ public class FindDuplicatesController {
         }
     }
 
+    /**
+     * Получить файловый хэш
+     * @param file
+     * @return
+     * @throws IOException
+     * @throws NoSuchAlgorithmException
+     */
     private String generateFileHash(File file) throws IOException, NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("MD5");
         byte[] fileBytes = Files.readAllBytes(file.toPath());
@@ -214,6 +229,11 @@ public class FindDuplicatesController {
         return sb.toString();
     }
 
+    /**
+     * Создание миниатюры для вывода изображения
+     * @param file
+     * @return
+     */
     private ImageView createImageView(File file) {
         ImageView imageView;
         if (isImageFile(file)) {
@@ -226,6 +246,11 @@ public class FindDuplicatesController {
         return imageView;
     }
 
+    /**
+     * Проверка на тип данных
+     * @param file
+     * @return
+     */
     private boolean isImageFile(File file) {
         String[] imageExtensions = {"jpg", "jpeg", "png", "bmp", "gif"};
         String fileName = file.getName().toLowerCase();
@@ -240,6 +265,11 @@ public class FindDuplicatesController {
         }
     }
 
+    /**
+     * Выбранный пользователем тип данных
+     * @param dataType
+     * @return
+     */
     private FileType getFileType(String dataType) {
         switch (dataType) {
             case "Медиа файлы":
@@ -254,7 +284,11 @@ public class FindDuplicatesController {
 
     }
 
-    // Вывод сообщений об ошибке
+    /**
+     * Вывод сообщений об ошибке
+     * @param title
+     * @param content
+     */
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
