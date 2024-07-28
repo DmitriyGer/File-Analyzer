@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import main.FindDuplicatesController;
@@ -19,6 +21,8 @@ import main.FindDuplicatesController;
  * Исполняющая функция поиска дубликатов файлов
  */
 public class DuplicateFilesContent extends FindDuplicatesController {
+
+    public static ObservableList<FileInfo> fileDataList = FXCollections.observableArrayList();
 
     private final FileType fileType;
     private final List<String> systemDirectories;
@@ -43,9 +47,7 @@ public class DuplicateFilesContent extends FindDuplicatesController {
             return;
         }
 
-        // Map<String, List<FileInfo>> fileHashMap = new HashMap<>();
         try {
-            // findDuplicatesRecursive(directory, fileHashMap);
 
             Map<String, List<File>> fileMap = new HashMap<>();
             findDuplicatesRecursive(directory, fileMap);
@@ -58,10 +60,11 @@ public class DuplicateFilesContent extends FindDuplicatesController {
                         imageView.setOnMouseClicked(event -> openFile(file));
                         fileDataList.add(new FileInfo(index++, file.getName(), imageView, file.getAbsolutePath(), file.length()));
                         System.out.println("А вывод тусит тут");
+                        
                     }
                 }
             }
-            
+
         } catch (IOException | NoSuchAlgorithmException e) {
             System.out.println("Произошла ошибка при обработке файлов: " + e.getMessage());
         }
@@ -94,10 +97,7 @@ public class DuplicateFilesContent extends FindDuplicatesController {
                 String fileHash = getFileHash(file, digest);
 
                 fileHashMap.computeIfAbsent(fileHash, k -> new ArrayList<>()).add(file);
-                System.out.println("Хде вывод!?");
 
-                // FileInfo fileInfo = new FileInfo(file.getName(), file.getAbsolutePath(), file.length());
-                // fileHashMap.computeIfAbsent(fileHash, k -> new ArrayList<>()).add(fileInfo);
             }
         }
     }
@@ -197,7 +197,7 @@ public class DuplicateFilesContent extends FindDuplicatesController {
             Image image = new Image(file.toURI().toString(), 50, 50, true, true);
             imageView = new ImageView(image);
         } else {
-            Image image = new Image(getClass().getResourceAsStream("/thumbnails/default.png"), 50, 50, true, true);
+            Image image = new Image(getClass().getResourceAsStream("/Images/1.png"), 50, 50, true, true);
             imageView = new ImageView(image);
         }
         return imageView;

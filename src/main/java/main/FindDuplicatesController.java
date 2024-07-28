@@ -157,113 +157,14 @@ public class FindDuplicatesController {
             showAlert("Ошибка", "Неправильный тип данных");
             return;
         }
-
-        fileDataList.clear();
-        findDuplicates(new File(directoryPath));
-
+        
         // Создание и запуск процессора поиска дубликатов
-        // DuplicateFilesProcessor processor = new DuplicateFilesProcessor(fileType, nameSelected, sizeSelected, contentSelected);
-        // processor.processFiles(directoryPath);
-
-
+        DuplicateFilesProcessor processor = new DuplicateFilesProcessor(fileType, nameSelected, sizeSelected, contentSelected);
+        processor.processFiles(directoryPath);
 
     }
 
-    /**
-     * Функция для поиска дубликатов по содержимому и вывод резуьтатов
-     * @param directory
-     */
-    private void findDuplicates(File directory) {
-        Map<String, List<File>> fileMap = new HashMap<>();
-        scanDirectory(directory, fileMap);
-
-        int index = 1;
-        for (List<File> files : fileMap.values()) {
-            if (files.size() > 1) {
-                for (File file : files) {
-                    ImageView imageView = createImageView(file);
-                    imageView.setOnMouseClicked(event -> openFile(file));
-                    fileDataList.add(new FileInfo(index++, file.getName(), imageView, file.getAbsolutePath(), file.length()));
-                }
-            }
-        }
-    }
-
-    /**
-     * Сканирование директорий при помощи хэш
-     * @param directory
-     * @param fileMap
-     */
-    private void scanDirectory(File directory, Map<String, List<File>> fileMap) {
-        if (directory.isDirectory()) {
-            for (File file : Objects.requireNonNull(directory.listFiles())) {
-                if (file.isDirectory()) {
-                    scanDirectory(file, fileMap);
-                } else {
-                    try {
-                        String hash = generateFileHash(file);
-                        fileMap.computeIfAbsent(hash, k -> new ArrayList<>()).add(file);
-                    } catch (IOException | NoSuchAlgorithmException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Получить файловый хэш
-     * @param file
-     * @return
-     * @throws IOException
-     * @throws NoSuchAlgorithmException
-     */
-    private String generateFileHash(File file) throws IOException, NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance("MD5");
-        byte[] fileBytes = Files.readAllBytes(file.toPath());
-        byte[] hashBytes = digest.digest(fileBytes);
-        StringBuilder sb = new StringBuilder();
-        for (byte b : hashBytes) {
-            sb.append(String.format("%02x", b));
-        }
-        return sb.toString();
-    }
-
-    /**
-     * Создание миниатюры для вывода изображения
-     * @param file
-     * @return
-     */
-    private ImageView createImageView(File file) {
-        ImageView imageView;
-        if (isImageFile(file)) {
-            Image image = new Image(file.toURI().toString(), 50, 50, true, true);
-            imageView = new ImageView(image);
-        } else {
-            Image image = new Image(getClass().getResourceAsStream("/thumbnails/default.png"), 50, 50, true, true);
-            imageView = new ImageView(image);
-        }
-        return imageView;
-    }
-
-    /**
-     * Проверка на тип данных
-     * @param file
-     * @return
-     */
-    private boolean isImageFile(File file) {
-        String[] imageExtensions = {"jpg", "jpeg", "png", "bmp", "gif"};
-        String fileName = file.getName().toLowerCase();
-        return Arrays.stream(imageExtensions).anyMatch(fileName::endsWith);
-    }
-
-    private void openFile(File file) {
-        try {
-            new ProcessBuilder("cmd", "/c", file.getAbsolutePath()).start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    
 
     /**
      * Выбранный пользователем тип данных
@@ -306,7 +207,7 @@ public class FindDuplicatesController {
         tableImage.setCellValueFactory(cellData -> cellData.getValue().imageViewProperty());
         tableWay.setCellValueFactory(cellData -> cellData.getValue().pathProperty());
         tableSize.setCellValueFactory(cellData -> cellData.getValue().sizeProperty().asObject());
-        tableView.setItems(fileDataList);
+        tableView.setItems(DuplicateFilesContent.fileDataList);
     }
     
 }
