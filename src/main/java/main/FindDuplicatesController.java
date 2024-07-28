@@ -201,9 +201,8 @@ public class FindDuplicatesController {
         tableWay.setCellValueFactory(cellData -> cellData.getValue().pathProperty());
         tableSize.setCellValueFactory(cellData -> cellData.getValue().sizeProperty().asObject());
         tableView.setItems(DuplicateFilesName.fileDataList);
-        tableView.setItems(DuplicateFilesContent.fileDataList);
         tableView.setItems(DuplicateFilesSize.fileDataList);
-        
+        tableView.setItems(DuplicateFilesContent.fileDataList);
     }
     
 }
