@@ -46,11 +46,13 @@ public class MainController {
 
     @FXML
     void btnShowSortMediaFiles(ActionEvent event) {
+        loadPage("SortMediaFiles.fxml");
         
     }
 
     @FXML
     void btnShowFixMetadata(ActionEvent event) {
+        loadPage("CorrectingMetadata.fxml");
 
     }
 

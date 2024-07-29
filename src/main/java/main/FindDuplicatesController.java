@@ -69,7 +69,11 @@ public class FindDuplicatesController {
     @FXML
     private TextField textWay;
 
-    // Системные директории
+    /**
+     * Проверка на системные директории
+     * @param directory
+     * @return
+     */
     private boolean isSystemDirectory(File directory) {
 
         String userName = System.getProperty("user.name");
@@ -104,6 +108,7 @@ public class FindDuplicatesController {
                 showAlert("Ошибка", "Выбранная папка является системной. Пожалуйста, выберите другую папку.");
             } else {
                 textWay.setText(selectedDirectory.getAbsolutePath());
+                textWay.end();
             }
         }
 
@@ -186,15 +191,45 @@ public class FindDuplicatesController {
 
     /**
      * ДОРАБОТАТЬ МЕТОТ ИНИЦИАЛИЗАЦИИ
-     * 1. Реализовать функцию для очистки таблицы
+     * 1. Реализовать функцию для очистки таблицы при повторном запуске или запуске с другого метода
      * 2. Реализовать, чтобы данные обновлялись со всех трех файлов
      * !!! 3. Доработать функцию для работы с документами !!!
-     * 4. Для реализации полноэкранногог режима переделать в SceneBuilder главное окно в BorderPane
+     * 4. Для реализации полноэкранного режима переделать в SceneBuilder главное окно в BorderPane 
+     *    (Под вопросом, возможно и так все исправить)
+     * 5. Добавить в таблицу кнопку выбора файлов (Как это сделано, в CorrectingMetadata.fxml) и кнопку удалить 
+     * 6. Добавить функцию открытия файла в нажатию на фото и открытие файла в проводнике по нажатию на путь
+     * 7. Добавить сообщение с выводом о том, что дубликаты не найдены
      */
     @FXML
     void initialize() {
-        choiceDataType.getItems().addAll("Медиа файлы", "Документы", "Все поддерживаемые файлы");
 
+        // Заполняем ChoiceBox и задаем значение по умолчанию
+        choiceDataType.getItems().addAll("Медиа файлы", "Документы", "Все поддерживаемые файлы");
+        choiceDataType.setValue("Медиа файлы");
+
+        // Добавляем слушатели изменений состояния CheckBox
+        checkContent.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
+            if (isNowSelected) {
+                checkName.setSelected(false);
+                checkSize.setSelected(false);
+            }
+        });
+
+        checkName.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
+            if (isNowSelected) {
+                checkContent.setSelected(false);
+                checkSize.setSelected(false);
+            }
+        });
+
+        checkSize.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
+            if (isNowSelected) {
+                checkContent.setSelected(false);
+                checkName.setSelected(false);
+            }
+        });
+
+        // Работа с таблицей
         tableNumber.setCellValueFactory(cellData -> cellData.getValue().numberProperty().asObject());
         tableName.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
         tableImage.setCellValueFactory(cellData -> cellData.getValue().imageViewProperty());

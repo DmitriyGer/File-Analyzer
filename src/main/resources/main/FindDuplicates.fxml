@@ -10,59 +10,59 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="774.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.FindDuplicatesController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="775.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.FindDuplicatesController">
    <children>
-      <Label layoutX="16.0" layoutY="83.0" prefHeight="30.0" prefWidth="56.0" text="Путь:">
+      <Label layoutX="16.0" layoutY="83.0" prefHeight="30.0" prefWidth="56.0" text="Путь:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="83.0">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="textWay" editable="false" layoutX="72.0" layoutY="85.0" prefHeight="26.0" prefWidth="334.0" promptText="Выберите папку" />
-      <Button fx:id="btnChoosingDirectory" layoutX="406.0" layoutY="85.0" mnemonicParsing="false" onAction="#btnChoosingDirectory" prefHeight="26.0" prefWidth="79.0" text="Выбрать" />
-      <Label layoutX="242.0" layoutY="14.0" text="Поиск дубликатов файлов">
+      <TextField fx:id="textWay" editable="false" layoutX="72.0" layoutY="85.0" prefHeight="26.0" prefWidth="388.0" promptText="Выберите папку" AnchorPane.leftAnchor="72.0" AnchorPane.topAnchor="85.0" />
+      <Button fx:id="btnChoosingDirectory" layoutX="460.0" layoutY="85.0" mnemonicParsing="false" onAction="#btnChoosingDirectory" prefHeight="26.0" prefWidth="79.0" text="Выбрать" AnchorPane.leftAnchor="460.0" AnchorPane.topAnchor="85.0" />
+      <Label layoutX="252.0" layoutY="14.0" text="Поиск дубликатов файлов" AnchorPane.topAnchor="14.0">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label layoutX="14.0" layoutY="57.0" text="Выберите папку для нахождения дубликатов">
+      <Label layoutX="14.0" layoutY="57.0" text="Выберите папку для нахождения дубликатов" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="57.0">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="16.0" layoutY="125.0" text="Парметры поиска:">
+      <Label layoutX="14.0" layoutY="113.0" text="Парметры поиска:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="113.0">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <CheckBox fx:id="checkName" layoutX="16.0" layoutY="152.0" mnemonicParsing="false" text="по названию">
+      <CheckBox fx:id="checkName" layoutX="14.0" layoutY="140.0" mnemonicParsing="false" text="по названию" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="140.0">
          <font>
             <Font size="14.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="checkSize" layoutX="142.0" layoutY="152.0" mnemonicParsing="false" text="по размеру">
+      <CheckBox fx:id="checkSize" layoutX="142.0" layoutY="152.0" mnemonicParsing="false" text="по размеру" AnchorPane.leftAnchor="142.0" AnchorPane.topAnchor="140.0">
          <font>
             <Font size="14.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="checkContent" layoutX="260.0" layoutY="152.0" mnemonicParsing="false" text="по содержимому">
+      <CheckBox fx:id="checkContent" layoutX="260.0" layoutY="152.0" mnemonicParsing="false" text="по содержимому" AnchorPane.leftAnchor="260.0" AnchorPane.topAnchor="140.0">
          <font>
             <Font size="14.0" />
          </font>
       </CheckBox>
-      <Label layoutX="16.0" layoutY="181.0" text="Выберите тип данных для поиска:">
+      <Label layoutX="14.0" layoutY="160.0" text="Выберите тип данных для поиска:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="160.0">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <ChoiceBox fx:id="choiceDataType" layoutX="16.0" layoutY="208.0" prefHeight="26.0" prefWidth="280.0" />
-      <Button fx:id="btnStartSearch" layoutX="406.0" layoutY="209.0" mnemonicParsing="false" onAction="#btnStartSearch" prefHeight="26.0" prefWidth="138.0" text="Начать поиск" />
-      <TableView fx:id="tableView" layoutX="4.0" layoutY="262.0" prefHeight="388.0" prefWidth="768.0" tableMenuButtonVisible="true">
+      <ChoiceBox fx:id="choiceDataType" layoutX="14.0" layoutY="187.0" prefHeight="26.0" prefWidth="280.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="187.0" />
+      <Button fx:id="btnStartSearch" layoutX="406.0" layoutY="187.0" mnemonicParsing="false" onAction="#btnStartSearch" prefHeight="26.0" prefWidth="138.0" text="Начать поиск" AnchorPane.leftAnchor="406.0" AnchorPane.topAnchor="187.0" />
+      <TableView fx:id="tableView" layoutX="-1.0" layoutY="227.0" prefHeight="523.0" prefWidth="775.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="290.0">
         <columns>
           <TableColumn fx:id="tableNumber" prefWidth="35.19998246431351" text="№" />
           <TableColumn fx:id="tableName" prefWidth="115.20000839233398" text="Название" />
             <TableColumn fx:id="tableImage" prefWidth="116.00001525878906" text="Вид" />
-            <TableColumn fx:id="tableWay" prefWidth="396.79998779296875" text="Путь" />
-            <TableColumn fx:id="tableSize" minWidth="0.0" prefWidth="109.5999755859375" text="Размер" />
+            <TableColumn fx:id="tableWay" prefWidth="391.0" text="Путь" />
+            <TableColumn fx:id="tableSize" minWidth="0.0" prefWidth="114.0" text="Размер" />
         </columns>
       </TableView>
    </children>

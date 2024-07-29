@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.MainController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="985.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.MainController">
    <left>
-      <VBox alignment="TOP_CENTER" prefHeight="650.0" prefWidth="185.0" style="-fx-background-color: #C0C0C0;" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" prefHeight="750.0" prefWidth="185.0" style="-fx-background-color: #C0C0C0;" BorderPane.alignment="CENTER">
          <children>
             <Label text="Меню">
                <font>
@@ -54,6 +54,6 @@
       </VBox>
    </left>
    <center>
-      <AnchorPane fx:id="contentPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <AnchorPane fx:id="contentPane" prefHeight="750.0" prefWidth="800.0" style="-fx-background-color: #FAFAFA;" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>
