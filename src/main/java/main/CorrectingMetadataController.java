@@ -14,8 +14,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import main.CorrectingMetadata.FileInfoMeta;
 
 public class CorrectingMetadataController {
 
@@ -56,28 +58,28 @@ public class CorrectingMetadataController {
     private Label labelMatchNotFound;
 
     @FXML
-    private TableColumn<?, ?> tableCurrentDate;
+    private TableView<FileInfoMeta> tableView;
 
     @FXML
-    private TableColumn<?, ?> tableImage;
+    private TableColumn<FileInfoMeta, Integer> tableNumber;
+    
+    @FXML
+    private TableColumn<FileInfoMeta, ?> tableSelect;
 
     @FXML
-    private TableColumn<?, ?> tableName;
+    private TableColumn<FileInfoMeta, String> tableName;
+    
+    @FXML
+    private TableColumn<FileInfoMeta, ImageView> tableImage;
 
     @FXML
-    private TableColumn<?, ?> tableNewDate;
+    private TableColumn<FileInfoMeta, String> tableWay;
 
     @FXML
-    private TableColumn<?, ?> tableNumber;
+    private TableColumn<FileInfoMeta, String> tableCurrentDate;
 
     @FXML
-    private TableColumn<?, ?> tableSelect;
-
-    @FXML
-    private TableView<?> tableView;
-
-    @FXML
-    private TableColumn<?, ?> tableWay;
+    private TableColumn<FileInfoMeta, String> tableNewDate;
 
     @FXML
     private TextField textUserPattern;
@@ -161,6 +163,28 @@ public class CorrectingMetadataController {
 
     /**
      * 1. Добавить возможность исправления метаданных в таблице после предварительного сканирования
+     *    - В столбце "Новая дата" заменить Label на ChoiceBox в котором по умолчанию будет находится
+     *      дата, которую выдаст алгоритма. Выбор переменных в ChoiceBox: ("Дата от алгоритма",
+     *      "Введите вручную", "Оставить без изменений")
+     * 
+     * 2. Проработка исключений:
+     *    - При "Сканировании" не все файлы могут удовлетворять заготовленным шаблонам, поэтому
+     *      нужно реализовать функционал, позволяющий после сканирования в таблице изменять
+     *      метаданные и после чего уже изменять все файлы
+     *    - Так же нужно сделать всплывающее окно, сообщающее пользователю о том, что сканирование
+     *      прошло успешно и ко всем файлам удалось найти шаблон или о том, что часть файлов 
+     *      нужно откорректировать вручную. 
+     *    - Реализация кнопок для обоих окон: ("ОК", "Исправить")
+     *      - "ОК" - загрывает окно информации и делает кнопку "Исправить" активной
+     *      - "Исправить" - дает пользователю возможность вручную исправить дату в таблице
+     * 
+     * 3. Работа с checkBox в таблице
+     *    - Рядом с таблицей добавить еще один choiceBox со след. параметрами ("Оставить без изменений",
+     *      "Удалить из окна")
+     *    - Рядям с choiceBox кнопку "Применить"
+     * 
+     * 4. Работа с таблицей:
+     *    - Дорабоать функцию, чтобы при нажатии на галочку выбирались все файлы
      */
     @FXML
     void initialize() {

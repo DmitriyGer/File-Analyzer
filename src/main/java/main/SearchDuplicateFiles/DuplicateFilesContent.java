@@ -33,7 +33,8 @@ public class DuplicateFilesContent extends FindDuplicatesController {
     }
 
     /**
-     * Проверки и исключения
+     * Проверка и исключение
+     * @param directoryPath
      */
     public void processFiles(String directoryPath) {
 
