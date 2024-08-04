@@ -58,6 +58,7 @@ public class MainController {
 
     @FXML
     void btnShowDiskAnalyzer(ActionEvent event) {
+        loadPage("DiskAnalyzer.fxml");
 
     }
 
@@ -80,6 +81,10 @@ public class MainController {
         }
     }
 
+    /**
+     * 1. Разобраться с размером окна при открытии
+     * 2. Заблокировать изменение окна
+     */
     @FXML
     void initialize() {
  
