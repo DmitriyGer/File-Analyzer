@@ -104,9 +104,14 @@ public class Analyzer {
         return size.get();
     }
 
-    private void updateDirSize(Path file, long size) {
-        Path dir = file.getParent();
-        sizes.put(dir.toString(), sizes.getOrDefault(dir.toString(), 0L) + size);
-        sizes.put(file.toString(), size); // Размер конкретного файла
+    private void updateDirSize(Path path, Long size) {
+        String key = path.toString();
+        sizes.put(key, size + sizes.getOrDefault(key, 0L));
+
+        Path parent = path.getParent();
+
+        if (parent != null) {
+            updateDirSize(parent, size);
+        }
     }
 }
