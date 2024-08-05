@@ -34,6 +34,9 @@ public class MainController {
     private Button btnSortMediaFiles;
 
     @FXML
+    private Button btnInstruction;
+
+    @FXML
     private Button btnToDeveloper;
 
     @FXML
@@ -64,6 +67,11 @@ public class MainController {
 
     @FXML
     void btnShowConnectAndroid(ActionEvent event) {
+        loadPage("ConnectAndroid.fxml");
+    }
+
+    @FXML
+    void btnShowInstruction(ActionEvent event) {
 
     }
 

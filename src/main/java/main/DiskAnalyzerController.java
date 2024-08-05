@@ -53,6 +53,9 @@ public class DiskAnalyzerController {
 
     @FXML
     private Button btnStartAnalys;
+    
+    @FXML
+    private Button btnClearWayAndPieChart;
 
     @FXML
     private PieChart pieChart;
@@ -176,6 +179,16 @@ public class DiskAnalyzerController {
     }
 
     /**
+     * Кнопка обнуления пути и чистка pieChart
+     * @param event
+     */
+    @FXML
+    void btnClearWayAndPieChart(ActionEvent event) {
+        textWay.clear();
+        pieChart.getData().clear();
+    }
+
+    /**
      * Обрабатывающая функция
      */
     private void refillChart(String path) {
@@ -257,7 +270,8 @@ public class DiskAnalyzerController {
 
     @FXML
     void initialize() {
-        
+        pieChart.setPrefSize(400, 400);
+        pieChart.setMinSize(300, 300);
     }
 
 }

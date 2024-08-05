@@ -45,6 +45,11 @@
                   <Insets left="10.0" right="10.0" top="20.0" />
                </VBox.margin>
             </Button>
+            <Button fx:id="btnInstruction" mnemonicParsing="false" onAction="#btnShowInstruction" prefHeight="30.0" prefWidth="160.0" text="Инструкция">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Button>
             <Button fx:id="btnToDeveloper" mnemonicParsing="false" onAction="#btnShowToDeveloper" prefHeight="30.0" prefWidth="160.0" text="О разработчике">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" top="20.0" />
