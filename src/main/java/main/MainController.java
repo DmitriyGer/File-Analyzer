@@ -81,10 +81,6 @@ public class MainController {
         }
     }
 
-    /**
-     * 1. Разобраться с размером окна при открытии
-     * 2. Заблокировать изменение окна
-     */
     @FXML
     void initialize() {
  

@@ -1,37 +1,49 @@
 package main;
 
 import java.io.File;
+import java.net.URL;
 import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.fxml.FXMLLoader;
 import main.DiskAnalyzer.Analyzer;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 
 public class DiskAnalyzerController {
+
     private Stage stage;
     private Map<String, Long> sizes;
     private ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
     private Stack<String> previousPaths = new Stack<>();
+    private File selectedDirectory;
 
     @FXML
-    private Button btnChooseDir;
+    private ResourceBundle resources;
+
+    @FXML
+    private URL location;
+
+    @FXML
+    private Button btnChoosingDirectory;
 
     @FXML
     private Button btnGoBack;
@@ -40,7 +52,13 @@ public class DiskAnalyzerController {
     private Button btnNewWindow;
 
     @FXML
+    private Button btnStartAnalys;
+
+    @FXML
     private PieChart pieChart;
+
+    @FXML
+    private TextField textWay;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -51,14 +69,14 @@ public class DiskAnalyzerController {
      * @param event
      */
     @FXML
-    private void btnChooseDir(ActionEvent event) {
+    void btnChoosingDirectory(ActionEvent event) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
-        File file = directoryChooser.showDialog(stage);
-        if (file != null) {
-            String path = file.getAbsolutePath();
-            sizes = new Analyzer().calculateDirectorySize(Path.of(path));
-            previousPaths.clear(); // Очистить при выборе новой директории
-            refillChart(path);
+        Stage stage = (Stage) btnChoosingDirectory.getScene().getWindow();
+        selectedDirectory = directoryChooser.showDialog(stage);
+
+        if (selectedDirectory != null) {
+            textWay.setText(selectedDirectory.getAbsolutePath());
+            textWay.end();
         }
     }
 
@@ -67,7 +85,7 @@ public class DiskAnalyzerController {
      * @param event
      */
     @FXML
-    private void btnGoBack(ActionEvent event) {
+    void btnGoBack(ActionEvent event) {
         if (!previousPaths.isEmpty()) {
             String path = previousPaths.pop();
             refillChart(path);
@@ -79,7 +97,7 @@ public class DiskAnalyzerController {
      * @param event
      */
     @FXML
-    private void btnNewWindow(ActionEvent event) {
+    void btnNewWindow(ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DiskAnalyzer.fxml"));
             Parent root = fxmlLoader.load();
@@ -94,6 +112,66 @@ public class DiskAnalyzerController {
             newStage.show();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Кнопка запуска анализатора
+     * @param event
+     */
+    @FXML
+    void btnStartAnalys(ActionEvent event) {
+        if (selectedDirectory != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("ProgressDialog.fxml"));
+                Parent root = loader.load();
+
+                ProgressDialogController progressController = loader.getController();
+                Stage progressStage = new Stage();
+                progressController.setStage(progressStage);
+                progressStage.setScene(new Scene(root));
+                progressStage.initModality(Modality.APPLICATION_MODAL);
+                progressStage.initStyle(StageStyle.UTILITY);
+                progressStage.setTitle("Прогресс анализа");
+
+                progressController.getBtnCancel().setOnAction(e -> {
+                    progressController.cancelAnalysis();
+                    progressStage.close();
+                });
+
+                progressStage.show();
+
+                // Запуск анализа в отдельном потоке
+                new Thread(() -> {
+                    Analyzer analyzer = new Analyzer();
+                    analyzer.setProgressCallback((progress, total) -> {
+                        if (progressController.isCancelled()) {
+                            // Остановка анализа (например, выброс исключения или досрочный возврат)
+                            return;
+                        }
+                        
+                        double percentage = (double) progress / total;
+                        Platform.runLater(() -> {
+                            progressController.getProgressBar().setProgress(percentage);
+                            progressController.getLabelProgress().setText(String.format("%.1f%%", percentage * 100));
+                        });
+                    });
+                    sizes = analyzer.calculateDirectorySize(Path.of(selectedDirectory.getAbsolutePath()));
+
+                    Platform.runLater(() -> {
+                        if (!progressController.isCancelled()) {
+                            refillChart(selectedDirectory.getAbsolutePath());
+                        }
+                        progressStage.close();
+                    });
+                }).start();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            // Показать предупреждающее сообщение
+            showAlertERROR("Ошибка", "Выберите диск или папку");
         }
     }
 
@@ -126,23 +204,36 @@ public class DiskAnalyzerController {
                     previousPaths.push(path);
                     refillChart(dir);
                 } else {
-                    showAlert("Информация", "Внимание!", "Выбранный элемент является файлом.");
+                    showAlertINFO("Информация", "Внимание!", "Выбранный элемент является файлом.");
                 }
             });
         });
     }
-    
+
     /**
-     * Функция вывода и обработки ошибок
+     * Функция вывода информационного сообщения
      * @param title
      * @param header
      * @param content
      */
-    private void showAlert(String title, String header, String content) {
+    private void showAlertINFO(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    /**
+     * Функция вывода об ошибке
+     * @param title
+     * @param message
+     */
+    private void showAlertERROR(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
         alert.showAndWait();
     }
 
@@ -164,13 +255,9 @@ public class DiskAnalyzerController {
         }
     } 
 
-    /** 
-     * 1. При выборе конечного файла, например видео, при нажатии открывать его (сейчас выводит ошибку)
-     *    Сейчас выводится сообщение о том, что это файл и дальше перейти нельзя
-     */
     @FXML
-    public void initialize() {
-        // Initialization, if needed
+    void initialize() {
+        
     }
 
 }
