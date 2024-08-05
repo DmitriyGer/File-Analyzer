@@ -7,7 +7,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.stage.Stage;
 
 /**
- * ProcessBar
+ * ProgressBar
  * Показывает прогресс работы алгоритма
  */
 public class ProgressDialogController {
