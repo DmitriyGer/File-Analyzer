@@ -7,10 +7,10 @@ import javafx.scene.control.ProgressBar;
 import javafx.stage.Stage;
 
 /**
- * ProgressBar
+ * ProcessBar
  * Показывает прогресс работы алгоритма
  */
-public class ProgressDialogController {
+public class ProgressBarController {
     @FXML
     private Label labelProgress;
 

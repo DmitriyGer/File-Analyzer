@@ -152,7 +152,7 @@ public class DiskAnalyzerController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("ProgressDialog.fxml"));
                 Parent root = loader.load();
 
-                ProgressDialogController progressController = loader.getController();
+                ProgressBarController progressController = loader.getController();
                 Stage progressStage = new Stage();
                 progressController.setStage(progressStage);
                 progressStage.setScene(new Scene(root));

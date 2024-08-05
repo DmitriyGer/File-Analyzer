@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="89.0" prefWidth="335.0" spacing="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22" fx:controller="main.ProgressDialogController">
+<VBox alignment="CENTER" prefHeight="89.0" prefWidth="335.0" spacing="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22" fx:controller="main.ProgressBarController">
    <Label text="Выполняется инициализация и обработка файлов..." />
    <HBox prefHeight="21.0" prefWidth="326.0">
       <children>
