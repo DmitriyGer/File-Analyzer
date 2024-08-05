@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
@@ -24,6 +25,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import main.DiskAnalyzer.Analyzer;
@@ -108,13 +110,34 @@ public class DiskAnalyzerController {
             Stage newStage = new Stage();
             controller.setStage(newStage);
 
+            // Передача данных в новый контроллер
+            controller.setData(selectedDirectory, sizes, previousPaths);
+
             newStage.setTitle("Disk Analyzer");
             newStage.setScene(new Scene(root));
+
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        
+            newStage.setWidth(screenBounds.getWidth() * 0.8);
+            newStage.setHeight(screenBounds.getHeight() * 0.8);
+
             newStage.initModality(Modality.APPLICATION_MODAL);
             newStage.initStyle(StageStyle.DECORATED);
             newStage.show();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void setData(File selectedDirectory, Map<String, Long> sizes, Stack<String> previousPaths) {
+        this.selectedDirectory = selectedDirectory;
+        this.sizes = sizes;
+        this.previousPaths = previousPaths;
+    
+        if (selectedDirectory != null) {
+            textWay.setText(selectedDirectory.getAbsolutePath());
+            textWay.end();
+            refillChart(selectedDirectory.getAbsolutePath());
         }
     }
 
@@ -135,7 +158,7 @@ public class DiskAnalyzerController {
                 progressStage.setScene(new Scene(root));
                 progressStage.initModality(Modality.APPLICATION_MODAL);
                 progressStage.initStyle(StageStyle.UTILITY);
-                progressStage.setTitle("Прогресс анализа");
+                progressStage.setTitle("Загрузка...");
 
                 progressController.getBtnCancel().setOnAction(e -> {
                     progressController.cancelAnalysis();
@@ -268,10 +291,17 @@ public class DiskAnalyzerController {
         }
     } 
 
+    /**
+     * 1. Реализовать на коненчной директории открытие медиафайлов или переход в директорию, если
+     *    она не является системной. Должно выводится информационное окно, в котором будет написано
+     *    название файла, путь до него, кнопка "Закрыть", "Открыть", "Показать в проводнике"
+     * 
+     * 2. Исправить PieChart, чтобы его размеры были статичными
+     */
     @FXML
     void initialize() {
-        pieChart.setPrefSize(400, 400);
-        pieChart.setMinSize(300, 300);
+        // pieChart.setPrefSize(400, 400);
+        // pieChart.setMinSize(300, 300);
     }
 
 }
