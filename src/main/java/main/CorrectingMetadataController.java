@@ -240,7 +240,9 @@ public class CorrectingMetadataController {
                                                     + "Пример: IMG_20240729_220130.jpg \n"
                                                     + "                        yyyyMMdd_HHmmss \n"
                                                     );
+        
         labelInstruction.setTooltip(tooltipInstruction);
+        
 
     }
 
