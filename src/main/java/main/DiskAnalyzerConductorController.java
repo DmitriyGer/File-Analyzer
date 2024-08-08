@@ -1,6 +1,5 @@
 package main;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,12 +17,10 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import main.DiskAnalyzer.AnalyzerChar;
 import main.DiskAnalyzer.AnalyzerConductor;
 
 import java.io.File;
 import java.net.URL;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -53,7 +50,7 @@ public class DiskAnalyzerConductorController {
     private Button btnStartAnalys;
     
     @FXML
-    private Button btnClearWayAndPieChart;
+    private Button btnClearWayAndTreeView;
 
     @FXML
     private CheckBox checkTreeView;
@@ -150,79 +147,31 @@ public class DiskAnalyzerConductorController {
         }
     }
 
+    
+
     /**
      * Кнопка запуска анализатора
      * @param event
      */
-        public void btnStartAnalys(ActionEvent event) {
+    public void btnStartAnalys(ActionEvent event) {
         try {
             if (selectedDirectory != null) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("ProgressDialog.fxml"));
-                Parent root = loader.load();
-                ProgressBarController progressController = loader.getController();
+                rootTotalSpace = AnalyzerConductor.getDirectorySize(selectedDirectory);
+                TreeItem<StackPane> rootItem = AnalyzerConductor.createTreeItem(selectedDirectory, rootTotalSpace, directoryTreeView);
+                rootItem.setExpanded(true);
+                directoryTreeView.setRoot(rootItem);
 
-                Stage progressStage = new Stage();
-                progressStage.setTitle("Прогресс анализа");
-                progressStage.setScene(new Scene(root));
-                progressStage.initModality(Modality.APPLICATION_MODAL);
-                progressController.setStage(progressStage);
-
-                progressController.getBtnCancel().setOnAction(e -> {
-                    progressController.cancelAnalysis();
-                    progressStage.close();
-                });
-
-                progressStage.show();
-
-                new Thread(() -> {
-                    try {
-                        rootTotalSpace = AnalyzerConductor.getDirectorySize(selectedDirectory);
-                        TreeItem<StackPane> rootItem = AnalyzerConductor.createTreeItem(selectedDirectory, rootTotalSpace, directoryTreeView);
-                        
-                        Platform.runLater(() -> {
-                            rootItem.setExpanded(true);
-                            directoryTreeView.setRoot(rootItem);
-                        });
-
-                        updateProgressBar(progressController, rootTotalSpace, selectedDirectory);
-
-                        Platform.runLater(() -> {
-                            if (!progressController.isCancelled()) {
-                                directoryTreeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-                                    if (newValue != null) {
-                                        File selectedFile = new File(newValue.getValue().getId());
-                                        long selectedDirectorySize = selectedFile.isDirectory() ? AnalyzerConductor.getDirectorySize(selectedFile) : rootTotalSpace;
-                                        AnalyzerConductor.updateTreeItems(selectedFile, newValue, selectedDirectorySize, directoryTreeView);
-                                    }
-                                });
-                            }
-                            progressStage.close();
-                        });
-                    } catch (Exception e) {
-                        Platform.runLater(() -> {
-                            progressStage.close();
-                            System.out.println("Произошла ошибка при обработке файлов: " + e.getMessage());
-                        });
+                directoryTreeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue != null) {
+                        File selectedFile = new File(newValue.getValue().getId());
+                        long selectedDirectorySize = selectedFile.isDirectory() ? AnalyzerConductor.getDirectorySize(selectedFile) : rootTotalSpace;
+                        AnalyzerConductor.updateTreeItems(selectedFile, newValue, selectedDirectorySize, directoryTreeView);
                     }
-                }).start();
+                });
             }
         } catch (Exception e) {
             System.out.println("Произошла ошибка при обработке файлов: " + e.getMessage());
         }
-    }
-
-    private void updateProgressBar(ProgressBarController progressController, long totalSpace, File directory) {
-        AnalyzerChar analyzer = new AnalyzerChar();
-        analyzer.setProgressCallback((progress, total) -> {
-            if (progressController.isCancelled()) return;
-            double percentage = (double) progress / totalSpace;
-            Platform.runLater(() -> {
-                progressController.getProgressBar().setProgress(percentage);
-                progressController.getLabelProgress().setText(String.format("%.2f%%", percentage * 100));
-            });
-        });
-
-        analyzer.calculateDirectorySize(Path.of(directory.getAbsolutePath()));
     }
    
     /**
@@ -230,9 +179,9 @@ public class DiskAnalyzerConductorController {
      * @param event
      */
     @FXML
-    void btnClearWayAndPieChart(ActionEvent event) {
+    void btnClearWayAndTreeView(ActionEvent event) {
         textWay.clear();
-        pieChart.getData().clear();
+        directoryTreeView.setRoot(null);
     }
 
     /**

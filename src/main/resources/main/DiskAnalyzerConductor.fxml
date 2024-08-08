@@ -43,7 +43,7 @@
                   </Label>
                   <TextField fx:id="textWay" editable="false" prefHeight="26.0" prefWidth="388.0" promptText="Выберите папку" />
                   <Button fx:id="btnChoosingDirectory" mnemonicParsing="false" onAction="#btnChoosingDirectory" prefHeight="26.0" prefWidth="79.0" text="Выбрать" />
-                  <Button fx:id="btnClearWayAndPieChart" mnemonicParsing="false" onAction="#btnClearWayAndPieChart" prefHeight="26.0" prefWidth="79.0" text="Очистить">
+                  <Button fx:id="btnClearWayAndTreeView" mnemonicParsing="false" onAction="#btnClearWayAndTreeView" prefHeight="26.0" prefWidth="79.0" text="Очистить">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>

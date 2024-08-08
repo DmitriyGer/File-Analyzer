@@ -12,16 +12,16 @@ import javafx.scene.text.TextFlow;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.*;
+import java.util.concurrent.*;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 /**
  * Исполняющая функция анализатора дискового пространства для исследования в проводнике
  */
 public class AnalyzerConductor {
+    private static final Map<File, Long> sizeCache = new ConcurrentHashMap<>();
 
     public static TreeItem<StackPane> createTreeItem(File file, long parentTotalSpace, TreeView<StackPane> treeView) {
         long usedSpace = getDirectorySize(file);
@@ -33,10 +33,7 @@ public class AnalyzerConductor {
         if (file.isDirectory()) {
             File[] files = file.listFiles();
             if (files != null) {
-                List<File> fileList = new ArrayList<>();
-                for (File f : files) {
-                    fileList.add(f);
-                }
+                List<File> fileList = new ArrayList<>(Arrays.asList(files));
                 fileList.sort(Comparator.comparingLong(AnalyzerConductor::getDirectorySize).reversed());
 
                 for (File f : fileList) {
@@ -44,10 +41,8 @@ public class AnalyzerConductor {
                 }
             }
         }
-
         return treeItem;
-    }
-    
+    }    
 
     public static StackPane createTreeItemContent(File file, long usedSpace, double spacePercentage, TreeView<StackPane> treeView) {
         DecimalFormat df = new DecimalFormat("#.##");
@@ -90,17 +85,22 @@ public class AnalyzerConductor {
     }
 
     public static long getDirectorySize(File file) {
-        if (file.isFile()) {
-            return file.length();
+        if (sizeCache.containsKey(file)) {
+            return sizeCache.get(file);
         }
 
         long size = 0;
-        File[] files = file.listFiles();
-        if (files != null) {
-            for (File f : files) {
-                size += getDirectorySize(f);
+        if (file.isFile()) {
+            size = file.length();
+        } else {
+            File[] files = file.listFiles();
+            if (files != null) {
+                for (File f : files) {
+                    size += getDirectorySize(f);
+                }
             }
         }
+        sizeCache.put(file, size);
         return size;
     }
 
@@ -120,10 +120,7 @@ public class AnalyzerConductor {
         if (directory.isDirectory()) {
             File[] files = directory.listFiles();
             if (files != null) {
-                List<File> fileList = new ArrayList<>();
-                for (File f : files) {
-                    fileList.add(f);
-                }
+                List<File> fileList = new ArrayList<>(Arrays.asList(files));
                 fileList.sort(Comparator.comparingLong(AnalyzerConductor::getDirectorySize).reversed());
 
                 for (File f : fileList) {
@@ -133,5 +130,4 @@ public class AnalyzerConductor {
             }
         }
     }
-
 }
