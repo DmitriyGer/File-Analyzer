@@ -21,16 +21,18 @@ import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import main.DiskAnalyzer.Analyzer;
+import main.DiskAnalyzer.AnalyzerChar;
 
-public class DiskAnalyzerController {
+public class DiskAnalyzerCharController {
 
     private Stage stage;
     private Map<String, Long> sizes;
@@ -58,6 +60,15 @@ public class DiskAnalyzerController {
     
     @FXML
     private Button btnClearWayAndPieChart;
+
+    @FXML
+    private CheckBox checkPieChart;
+
+    @FXML
+    private CheckBox checkTreeView;
+
+    @FXML
+    private AnchorPane paneViewAnalyzer;
 
     @FXML
     private PieChart pieChart;
@@ -104,9 +115,9 @@ public class DiskAnalyzerController {
     @FXML
     void btnNewWindow(ActionEvent event) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DiskAnalyzer.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DiskAnalyzerChar.fxml"));
             Parent root = fxmlLoader.load();
-            DiskAnalyzerController controller = fxmlLoader.getController();
+            DiskAnalyzerCharController controller = fxmlLoader.getController();
             Stage newStage = new Stage();
             controller.setStage(newStage);
 
@@ -116,10 +127,12 @@ public class DiskAnalyzerController {
             newStage.setTitle("Disk Analyzer");
             newStage.setScene(new Scene(root));
 
-            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            // Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
         
-            newStage.setWidth(screenBounds.getWidth() * 0.8);
-            newStage.setHeight(screenBounds.getHeight() * 0.8);
+            // newStage.setWidth(screenBounds.getWidth() * 1);
+            // newStage.setHeight(screenBounds.getHeight() * 1);
+
+            newStage.setMaximized(true); // Открытие окна на весь экран
 
             newStage.initModality(Modality.APPLICATION_MODAL);
             newStage.initStyle(StageStyle.DECORATED);
@@ -169,7 +182,7 @@ public class DiskAnalyzerController {
 
                 // Запуск анализа в отдельном потоке
                 new Thread(() -> {
-                    Analyzer analyzer = new Analyzer();
+                    AnalyzerChar analyzer = new AnalyzerChar();
                     analyzer.setProgressCallback((progress, total) -> {
                         if (progressController.isCancelled()) {
                             // Остановка анализа (например, выброс исключения или досрочный возврат)
@@ -179,7 +192,7 @@ public class DiskAnalyzerController {
                         double percentage = (double) progress / total;
                         Platform.runLater(() -> {
                             progressController.getProgressBar().setProgress(percentage);
-                            progressController.getLabelProgress().setText(String.format("%.1f%%", percentage * 100));
+                            progressController.getLabelProgress().setText(String.format("%.2f%%", percentage * 100));
                         });
                     });
                     sizes = analyzer.calculateDirectorySize(Path.of(selectedDirectory.getAbsolutePath()));
@@ -289,7 +302,7 @@ public class DiskAnalyzerController {
         } else {
             return size + " B";
         }
-    } 
+    }  
 
     /**
      * 1. Реализовать на коненчной директории открытие медиафайлов или переход в директорию, если
@@ -297,6 +310,25 @@ public class DiskAnalyzerController {
      *    название файла, путь до него, кнопка "Закрыть", "Открыть", "Показать в проводнике"
      * 
      * 2. Исправить PieChart, чтобы его размеры были статичными
+     * 3. Отредактировать доп информацию о директории/файле в TreeView
+     * 4. Сделать, чтобы новое окно открывалось в полноэкранном режиме (сразу на весь экран)
+     */
+
+
+
+    /**
+     * Для добавления новой функции:
+     * 1. Реализовать файл процессора, который будет запускать файл либо с диаграммой, либо с
+     *    проводником, выбор зависет от пользователя. Выбор осуществляется при помощи CheckBox
+     *    Пример реализации: FindDuplicatesController
+     * 
+     * 2. Переместить файлы для диаграммы с основного контроллера в свой собственный
+     * 3. Переместить исполняющие файлы проводника с тестовой версии проекта project2 
+     *    в директории GB
+     * 4. Переместить файлы для проводника с тестовой версии проекта project2 в 
+     *    директории GB
+     * 5. Доработать недочеты указанные в коментарии выше
+     * 6. Протестировать
      */
     @FXML
     void initialize() {

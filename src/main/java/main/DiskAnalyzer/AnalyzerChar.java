@@ -11,9 +11,9 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Исполняющая функция анализатора дискового пространства
+ * Исполняющая функция анализатора дискового пространства для круговой диаграммы
  */
-public class Analyzer {
+public class AnalyzerChar {
 
     private HashMap<String, Long> sizes;
     private ProgressCallback progressCallback;

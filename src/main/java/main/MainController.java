@@ -61,7 +61,7 @@ public class MainController {
 
     @FXML
     void btnShowDiskAnalyzer(ActionEvent event) {
-        loadPage("DiskAnalyzer.fxml");
+        loadPage("DiskAnalyzerChoice.fxml");
 
     }
 

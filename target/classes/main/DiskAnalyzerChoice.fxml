@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<BorderPane fx:id="paneBorderContent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="750.0" minWidth="775.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.DiskAnalyzerChoiceController">
+   <top>
+      <VBox minHeight="100.0" minWidth="775.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Анализатор дискового пространства">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="180.0" top="14.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Выберите удобный для вас метод просмотра анализа">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="14.0" />
+               </VBox.margin>
+            </Label>
+            <HBox prefHeight="18.0" prefWidth="600.0">
+               <children>
+                  <CheckBox fx:id="checkPieChart" mnemonicParsing="false" text="Диаграмный">
+                     <HBox.margin>
+                        <Insets right="4.0" />
+                     </HBox.margin>
+                  </CheckBox>
+                  <CheckBox fx:id="checkTreeView" mnemonicParsing="false" text="ПРОВОДНИКОВЫЙ" />
+               </children>
+               <VBox.margin>
+                  <Insets left="14.0" right="14.0" />
+               </VBox.margin>
+            </HBox>
+            <Button fx:id="btnChoice" mnemonicParsing="false" onAction="#btnChoice" text="Выбрать">
+               <VBox.margin>
+                  <Insets left="14.0" top="4.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
+   </top>
+   <center>
+      <AnchorPane fx:id="contentPane" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>
