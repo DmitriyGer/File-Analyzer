@@ -67,7 +67,7 @@ public class MainController {
 
     @FXML
     void btnShowConnectAndroid(ActionEvent event) {
-        loadPage("ConnectAndroid.fxml");
+        
     }
 
     @FXML

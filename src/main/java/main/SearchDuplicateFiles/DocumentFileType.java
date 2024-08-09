@@ -5,7 +5,7 @@ package main.SearchDuplicateFiles;
  */
 public class DocumentFileType implements FileType {
 
-    private static final String[] EXTENSIONS = {"doc", "docx", ".xls", "xlsx", "pdf", "ppt", "pptx", "txt"};
+    private static final String[] EXTENSIONS = {"doc", "docx", "xls", "xlsx", "pdf", "ppt", "pptx", "txt"};
 
     @Override
     public boolean isMatch(String filename) {

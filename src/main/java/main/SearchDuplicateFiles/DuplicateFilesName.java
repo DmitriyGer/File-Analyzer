@@ -6,13 +6,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Arrays;
+import java.util.Objects;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import main.FindDuplicatesController;
+import main.DiskAnalyzer.AnalyzerChar.ProgressCallback;
 
 /**
  * Исполняющая функция поиска дубликатов файлов
@@ -24,9 +25,10 @@ public class DuplicateFilesName extends FindDuplicatesController {
     private final FileType fileType;
     private final List<String> systemDirectories;
 
-    public DuplicateFilesName(FileType fileType) {
+    public DuplicateFilesName(FileType fileType, ObservableList<FileInfo> fileDataList) {
         this.fileType = fileType;
         this.systemDirectories = getSystemDirectories();
+        this.fileDataList = fileDataList;
     }
 
     /**
@@ -57,9 +59,8 @@ public class DuplicateFilesName extends FindDuplicatesController {
                 if (files.size() > 1) {
                     for (File file : files) {
                         ImageView imageView = createImageView(file);
-                        imageView.setOnMouseClicked(event -> openFile(file));
                         fileDataList.add(new FileInfo(index++, file.getName(), imageView, file.getAbsolutePath(), file.length()));
-                        System.out.println("Вывод через поиск по названию -- есть");
+                        // System.out.println("Вывод через поиск по названию -- есть");
                         
                     }
                 }
@@ -140,15 +141,27 @@ public class DuplicateFilesName extends FindDuplicatesController {
      * @return
      */
     private ImageView createImageView(File file) {
-        ImageView imageView;
-        if (isImageFile(file)) {
-            Image image = new Image(file.toURI().toString(), 50, 50, true, true);
-            imageView = new ImageView(image);
-        } else {
-            Image image = new Image(getClass().getResourceAsStream("/Images/1.png"), 50, 50, true, true);
-            imageView = new ImageView(image);
+        try {
+            String fileExtension = getFileExtension(file);
+            if (isImageFileType(fileExtension)) {
+                Image image = new Image(file.toURI().toString(), 75, 75, true, true);
+                return new ImageView(image);
+            } else {
+                // Укажите путь к изображению по умолчанию для не изображений
+                Image defaultImage = getImage("Images/1.png");
+                return new ImageView(defaultImage);
+            }
+        } catch (Exception e) {
+            // Укажите путь к изображению по умолчанию на случай исключения
+            Image defaultImage = getImage("Images/1.png");
+            return new ImageView(defaultImage);
         }
-        return imageView;
+    }
+
+    private String getFileExtension(File file) {
+        String fileName = file.getName();
+        int dotIndex = fileName.lastIndexOf('.');
+        return (dotIndex == -1) ? "" : fileName.substring(dotIndex + 1).toLowerCase();
     }
 
     /**
@@ -156,17 +169,23 @@ public class DuplicateFilesName extends FindDuplicatesController {
      * @param file
      * @return
      */
-    private boolean isImageFile(File file) {
-        String[] imageExtensions = {"jpg", "jpeg", "png", "bmp", "gif"};
-        String fileName = file.getName().toLowerCase();
-        return Arrays.stream(imageExtensions).anyMatch(fileName::endsWith);
+    private boolean isImageFileType(String fileExtension) {
+        // Сравните расширение файла с известными типами изображений
+        String[] imageExtensions = {"jpg", "jpeg", "png", "gif", "bmp"};
+        for (String extension : imageExtensions) {
+            if (extension.equals(fileExtension)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    private void openFile(File file) {
-        try {
-            new ProcessBuilder("cmd", "/c", file.getAbsolutePath()).start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private Image getImage(String resourcePath) {
+        return new Image(Objects.requireNonNull(getClass().getResourceAsStream(resourcePath)), 75, 75, true, true);
+    }
+
+    public void setProgressCallback(ProgressCallback progressCallback) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setProgressCallback'");
     }
 }

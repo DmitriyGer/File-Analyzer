@@ -5,11 +5,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,9 +28,10 @@ public class DuplicateFilesContent extends FindDuplicatesController {
     private final FileType fileType;
     private final List<String> systemDirectories;
 
-    public DuplicateFilesContent(FileType fileType) {
+    public DuplicateFilesContent(FileType fileType, ObservableList<FileInfo> fileDataList) {
         this.fileType = fileType;
         this.systemDirectories = getSystemDirectories();
+        this.fileDataList = fileDataList;
     }
 
     /**
@@ -62,9 +64,8 @@ public class DuplicateFilesContent extends FindDuplicatesController {
                 if (files.size() > 1) {
                     for (File file : files) {
                         ImageView imageView = createImageView(file);
-                        imageView.setOnMouseClicked(event -> openFile(file));
                         fileDataList.add(new FileInfo(index++, file.getName(), imageView, file.getAbsolutePath(), file.length()));
-                        System.out.println("Вывод через хэш есть");
+                        // System.out.println("Вывод через хэш есть");
                         
                     }
                 }
@@ -143,28 +144,6 @@ public class DuplicateFilesContent extends FindDuplicatesController {
     }
 
     /**
-     * Вывод результатов сканирования в консоль
-     * @param fileHashMap
-     */
-    /*
-    private void printDuplicates(Map<String, List<FileInfo>> fileHashMap) {
-        for (Map.Entry<String, List<FileInfo>> entry : fileHashMap.entrySet()) {
-            List<FileInfo> fileList = entry.getValue();
-            if (fileList.size() > 1) {
-                FileInfo originalFile = fileList.get(0);
-                System.out.println("Найден дубликат:");
-                System.out.println("Оригинальный файл: " + originalFile.getFileName() + ", Путь: " + originalFile.getFilePath() + ", Размер: " + originalFile.getFileSize() + " байт");
-                for (int i = 1; i < fileList.size(); i++) {
-                    FileInfo duplicateFile = fileList.get(i);
-                    System.out.println("Дубликат " + i + ": " + duplicateFile.getFileName() + ", Путь: " + duplicateFile.getFilePath() + ", Размер: " + duplicateFile.getFileSize() + " байт");
-                }
-                System.out.println(); // Интервал между выводами
-            }
-        }
-    }
-    */
-
-    /**
      * Получить файловый хэш
      * @param file
      * @param digest
@@ -197,15 +176,27 @@ public class DuplicateFilesContent extends FindDuplicatesController {
      * @return
      */
     private ImageView createImageView(File file) {
-        ImageView imageView;
-        if (isImageFile(file)) {
-            Image image = new Image(file.toURI().toString(), 50, 50, true, true);
-            imageView = new ImageView(image);
-        } else {
-            Image image = new Image(getClass().getResourceAsStream("/Images/1.png"), 50, 50, true, true);
-            imageView = new ImageView(image);
+        try {
+            String fileExtension = getFileExtension(file);
+            if (isImageFileType(fileExtension)) {
+                Image image = new Image(file.toURI().toString(), 75, 75, true, true);
+                return new ImageView(image);
+            } else {
+                // Укажите путь к изображению по умолчанию для не изображений
+                Image defaultImage = getImage("Images/1.png");
+                return new ImageView(defaultImage);
+            }
+        } catch (Exception e) {
+            // Укажите путь к изображению по умолчанию на случай исключения
+            Image defaultImage = getImage("Images/1.png");
+            return new ImageView(defaultImage);
         }
-        return imageView;
+    }
+
+    private String getFileExtension(File file) {
+        String fileName = file.getName();
+        int dotIndex = fileName.lastIndexOf('.');
+        return (dotIndex == -1) ? "" : fileName.substring(dotIndex + 1).toLowerCase();
     }
 
     /**
@@ -213,17 +204,18 @@ public class DuplicateFilesContent extends FindDuplicatesController {
      * @param file
      * @return
      */
-    private boolean isImageFile(File file) {
-        String[] imageExtensions = {"jpg", "jpeg", "png", "bmp", "gif"};
-        String fileName = file.getName().toLowerCase();
-        return Arrays.stream(imageExtensions).anyMatch(fileName::endsWith);
+    private boolean isImageFileType(String fileExtension) {
+        // Сравните расширение файла с известными типами изображений
+        String[] imageExtensions = {"jpg", "jpeg", "png", "gif", "bmp"};
+        for (String extension : imageExtensions) {
+            if (extension.equals(fileExtension)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    private void openFile(File file) {
-        try {
-            new ProcessBuilder("cmd", "/c", file.getAbsolutePath()).start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    private Image getImage(String resourcePath) {
+        return new Image(Objects.requireNonNull(getClass().getResourceAsStream(resourcePath)), 75, 75, true, true);
+    } 
 }

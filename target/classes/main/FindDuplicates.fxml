@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
@@ -8,6 +9,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.FindDuplicatesController">
@@ -54,8 +56,6 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <ChoiceBox fx:id="choiceDataType" layoutX="14.0" layoutY="187.0" prefHeight="26.0" prefWidth="280.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="187.0" />
-      <Button fx:id="btnStartSearch" layoutX="406.0" layoutY="187.0" mnemonicParsing="false" onAction="#btnStartSearch" prefHeight="26.0" prefWidth="138.0" text="Начать поиск" AnchorPane.leftAnchor="406.0" AnchorPane.topAnchor="187.0" />
       <TableView fx:id="tableView" layoutY="219.0" prefHeight="534.0" prefWidth="800.0" AnchorPane.bottomAnchor="-3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="219.0">
         <columns>
           <TableColumn fx:id="tableNumber" prefWidth="35.19998246431351" text="№" />
@@ -65,5 +65,28 @@
             <TableColumn fx:id="tableSize" minWidth="0.0" prefWidth="109.0" text="Размер" />
         </columns>
       </TableView>
+      <HBox layoutX="2.0" layoutY="187.0" prefHeight="27.0" prefWidth="800.0">
+         <children>
+            <ChoiceBox fx:id="choiceDataType" prefHeight="27.0" prefWidth="212.0" />
+            <Button fx:id="btnStartSearch" mnemonicParsing="false" onAction="#btnStartSearch" prefHeight="27.0" prefWidth="106.0" text="Начать поиск">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="btnNewWindow" mnemonicParsing="false" onAction="#btnNewWindow" prefHeight="27.0" prefWidth="142.0" text="Открыть в новом окне">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Button>
+            <Label prefHeight="17.0" prefWidth="295.0" text="Для удобства использования, откройте в новом окне">
+               <HBox.margin>
+                  <Insets left="5.0" top="10.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+         <padding>
+            <Insets left="14.0" />
+         </padding>
+      </HBox>
    </children>
 </AnchorPane>

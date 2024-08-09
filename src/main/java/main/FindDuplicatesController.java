@@ -1,21 +1,32 @@
 package main;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import main.SearchDuplicateFiles.*;
@@ -33,6 +44,9 @@ public class FindDuplicatesController {
 
     @FXML
     private Button btnStartSearch;
+
+    @FXML
+    private Button btnNewWindow;
 
     @FXML
     private CheckBox checkContent;
@@ -62,7 +76,7 @@ public class FindDuplicatesController {
     private TableColumn<FileInfo, String> tableWay;
 
     @FXML
-    private TableColumn<FileInfo, Long> tableSize;
+    private TableColumn<FileInfo, String> tableSize;
 
     protected ObservableList<FileInfo> fileDataList = FXCollections.observableArrayList();
 
@@ -105,13 +119,12 @@ public class FindDuplicatesController {
 
         if (selectedDirectory != null) {
             if (isSystemDirectory(selectedDirectory)) {
-                showAlert("Ошибка", "Выбранная папка является системной. Пожалуйста, выберите другую папку.");
+                showAlertERROR("Ошибка", "Выбранная папка является системной. Пожалуйста, выберите другую папку.");
             } else {
                 textWay.setText(selectedDirectory.getAbsolutePath());
                 textWay.end();
             }
         }
-
     }
 
     /**
@@ -120,41 +133,159 @@ public class FindDuplicatesController {
      */
     @FXML
     void btnStartSearch(ActionEvent event) {
-
+        fileDataList.clear();
+        tableView.setItems(FXCollections.observableArrayList());
         boolean nameSelected = checkName.isSelected();
         boolean sizeSelected = checkSize.isSelected();
         boolean contentSelected = checkContent.isSelected();
-
-        // Проверка выбора параметров поиска
         if (!nameSelected && !sizeSelected && !contentSelected) {
-            showAlert("Ошибка", "Выберите параметры поиска");
+            showAlertERROR("Ошибка", "Выберите параметры поиска");
             return;
         }
-
-        // Проверка выбранной дирекцией
         String directoryPath = textWay.getText();
         if (directoryPath == null || directoryPath.isEmpty()) {
-            showAlert("Ошибка", "Выберите папку для поиска дубликатов файла");
+            showAlertERROR("Ошибка", "Выберите папку для поиска дубликатов файла");
             return;
         }
-
-        // Проверка выбора типа данных
         String dataType = choiceDataType.getValue();
         if (dataType == null) {
-            showAlert("Ошибка", "Выберите тип данных");
+            showAlertERROR("Ошибка", "Выберите тип данных");
             return;
         }
-
         FileType fileType = getFileType(dataType);
         if (fileType == null) {
-            showAlert("Ошибка", "Неправильный тип данных");
+            showAlertERROR("Ошибка", "Неправильный тип данных");
             return;
         }
 
-        // Создание и запуск процессора поиска дубликатов
-        DuplicateFilesProcessor processor = new DuplicateFilesProcessor(fileType, nameSelected, sizeSelected, contentSelected);
-        processor.processFiles(directoryPath);
+        try {
+            // Загрузка окна прогресс-бара
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ProgressDialog.fxml"));
+            VBox progressBarLayout = loader.load();
+            ProgressBarController progressBarController = loader.getController();
 
+            DuplicateFilesProcessor processor = new DuplicateFilesProcessor(fileType, nameSelected, sizeSelected, contentSelected);
+            processor.setFileDataList(fileDataList);
+
+            Task<Void> task = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    processor.setOnProgressUpdate((progress, message) -> {
+                        updateProgress(progress, 1.0);
+                        updateMessage(message);
+                    });
+
+                    processor.processFiles(directoryPath);
+                    return null;
+                }
+            };
+
+            // Связывание прогресс-бара и лейбла с задачей
+            progressBarController.getProgressBar().progressProperty().bind(task.progressProperty());
+            progressBarController.getLabelProgress().textProperty().bind(task.messageProperty());
+
+            // Обработчик отмены
+            progressBarController.getBtnCancel().setOnAction(event1 -> {
+                task.cancel();
+                processor.cancel();
+            });
+
+            // Показываем окно прогресс-бара
+            Stage progressStage = new Stage();
+            progressStage.setScene(new Scene(progressBarLayout));
+            progressBarController.setStage(progressStage);
+            progressStage.setTitle("Загрузка...");
+            progressStage.show();
+
+            task.setOnSucceeded(workerStateEvent -> {
+                progressStage.close();
+                tableView.setItems(fileDataList);
+                if (fileDataList.isEmpty()) {
+                    showAlertINFO("Результат", "Дубликаты не найдены");
+                }
+            });
+
+            task.setOnCancelled(workerStateEvent -> {
+                progressStage.close();
+                showAlertINFO("Отмена", "Процесс поиска дубликатов был отменён");
+            });
+
+            new Thread(task).start();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlertERROR("Ошибка", "Произошла ошибка при загрузке окна прогресс-бара.");
+        }
+    }
+
+    /**
+     * Функция для определения размера файла
+     * @param sizeInBytes
+     * @return
+     */
+    private String formatFileSize(long sizeInBytes) {
+        if (sizeInBytes < 0) {
+            return "Invalid size";
+        }
+
+        final long BYTE = 1;
+        final long KILOBYTE = 1024 * BYTE;
+        final long MEGABYTE = 1024 * KILOBYTE;
+        final long GIGABYTE = 1024 * MEGABYTE;
+        final long BIT = BYTE * 8;
+
+        if (sizeInBytes >= GIGABYTE) {
+            return String.format("%.2f Гб", (double) sizeInBytes / GIGABYTE);
+        } else if (sizeInBytes >= MEGABYTE) {
+            return String.format("%.2f Мб", (double) sizeInBytes / MEGABYTE);
+        } else if (sizeInBytes >= KILOBYTE) {
+            return String.format("%.2f Кб", (double) sizeInBytes / KILOBYTE);
+        } else if (sizeInBytes >= BYTE) {
+            return String.format("%d байт", sizeInBytes);
+        } else {
+            return String.format("%d бит", sizeInBytes * BIT);
+        }
+    }
+
+    /**
+     * Функция для запуска приложения в новом окне с сохраненными параметрами
+     * @param event
+     */
+    @FXML
+    void btnNewWindow(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("FindDuplicates.fxml"));
+            Parent root = loader.load();
+
+            FindDuplicatesController newWindowController = loader.getController();
+
+            newWindowController.copyDataFrom(this);
+
+            Stage newStage = new Stage();
+            newStage.setTitle("Новое окно");
+            newStage.setScene(new Scene(root));
+            newStage.setMaximized(true);
+            newStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Сохранение информации для окрытия в новом окне
+     * @param originalController
+     */
+    private void copyDataFrom(FindDuplicatesController originalController) {
+        this.textWay.setText(originalController.textWay.getText());
+        
+        this.checkName.setSelected(originalController.checkName.isSelected());
+        this.checkSize.setSelected(originalController.checkSize.isSelected());
+        this.checkContent.setSelected(originalController.checkContent.isSelected());
+        
+        this.choiceDataType.setValue(originalController.choiceDataType.getValue());
+        
+        this.fileDataList.addAll(originalController.fileDataList);
+        this.tableView.setItems(this.fileDataList);
     }
 
     /**
@@ -181,7 +312,7 @@ public class FindDuplicatesController {
      * @param title
      * @param content
      */
-    private void showAlert(String title, String content) {
+    private void showAlertERROR(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(null);
@@ -190,15 +321,63 @@ public class FindDuplicatesController {
     }
 
     /**
+     * Вывод Информационного сообщения
+     * @param title
+     * @param content
+     */
+    private void showAlertINFO(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    /**
+     * Открывает проводник с выбранной папкой и выделенным файлом
+     * @param filePath путь к файлу
+     */
+    @SuppressWarnings("deprecation")
+    private void openFolderWithFile(String filePath) {
+        try {
+            File file = new File(filePath);
+            if (file.exists()) {
+                String command;
+                if (System.getProperty("os.name").toLowerCase().contains("win")) {
+                    // Открытие файла в проводнике Windows
+                    command = "explorer /select," + file.getAbsolutePath();
+                } else if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+                    // Открытие файла в Finder на macOS
+                    command = "open -R " + file.getAbsolutePath();
+                } else {
+                    // Открытие файла в файловом менеджере Linux
+                    command = "xdg-open " + file.getParent();
+                }
+                Runtime.getRuntime().exec(command);
+            } else {
+                showAlertERROR("Ошибка", "Файл не найден: " + filePath);
+            }
+        } catch (IOException e) {
+            showAlertERROR("Ошибка", "Не удалось открыть проводник для файла: " + filePath);
+            e.printStackTrace();
+        }
+    }
+
+    
+
+    /**
      * ДОРАБОТАТЬ МЕТОТ ИНИЦИАЛИЗАЦИИ
-     * 1. Реализовать функцию для очистки таблицы при повторном запуске или запуске с другого метода
-     * 2. Реализовать, чтобы данные обновлялись со всех трех файлов
-     * !!! 3. Доработать функцию для работы с документами !!!
-     * 4. Для реализации полноэкранного режима переделать в SceneBuilder главное окно в BorderPane 
-     *    (Под вопросом, возможно и так все исправить)
+     * ЕСТЬ 1. Реализовать функцию для очистки таблицы при повторном запуске или запуске с другого метода
+     * ЕСТЬ 2. Реализовать, чтобы данные обновлялись со всех трех файлов
+     * ЕСТЬ !!! 3. Доработать функцию для работы с документами !!!
+     * ЕСТЬ 4. Для реализации полноэкранного режима переделать в SceneBuilder главное окно в BorderPane 
+     *    (Под вопросом, возможно и так все исправить). Иначе, добавть функцию "На весь экран"
      * 5. Добавить в таблицу кнопку выбора файлов (Как это сделано, в CorrectingMetadata.fxml) и кнопку удалить 
-     * 6. Добавить функцию открытия файла в нажатию на фото и открытие файла в проводнике по нажатию на путь
-     * 7. Добавить сообщение с выводом о том, что дубликаты не найдены
+     * ЕСТЬ 6. Добавить функцию открытия файла в проводнике с указанием на элемент
+     * ЕСТЬ 7. Добавить сообщение с выводом о том, что дубликаты не найдены
+     * ЕСТЬ 8. Добавить прогресс бар. 
+     *      8.1. Реализовать прогресс бар, показывающий проценты загрузки))
+     * ЕСТЬ 9. Поработать над отображением размера файла
      */
     @FXML
     void initialize() {
@@ -230,14 +409,71 @@ public class FindDuplicatesController {
         });
 
         // Работа с таблицей
+        tableNumber.prefWidthProperty().bind(tableView.widthProperty().multiply(0.03));
+        tableName.prefWidthProperty().bind(tableView.widthProperty().multiply(0.2));
+        tableImage.prefWidthProperty().bind(tableView.widthProperty().multiply(0.2));
+        tableWay.prefWidthProperty().bind(tableView.widthProperty().multiply(0.47));
+        tableSize.prefWidthProperty().bind(tableView.widthProperty().multiply(0.1));
+
+        // Инициализация таблицы и привязка данных
         tableNumber.setCellValueFactory(cellData -> cellData.getValue().numberProperty().asObject());
         tableName.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
         tableImage.setCellValueFactory(cellData -> cellData.getValue().imageViewProperty());
         tableWay.setCellValueFactory(cellData -> cellData.getValue().pathProperty());
-        tableSize.setCellValueFactory(cellData -> cellData.getValue().sizeProperty().asObject());
-        tableView.setItems(DuplicateFilesName.fileDataList);
-        tableView.setItems(DuplicateFilesSize.fileDataList);
-        tableView.setItems(DuplicateFilesContent.fileDataList);
+        tableSize.setCellValueFactory(cellData -> {
+            Long size = cellData.getValue().getSize();
+            String formattedSize = formatFileSize(size);
+            return new SimpleStringProperty(formattedSize);
+        });
+        tableView.setItems(fileDataList);
+
+        // Добавление Tooltip на указание пути к файлу
+        tableWay.setCellFactory(column -> new TextFieldTableCell<FileInfo, String>() {
+        private final Tooltip tooltip = new Tooltip();
+
+            @Override
+            public void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null || empty) {
+                    setText(null);
+                    setTooltip(null);
+                } else {
+                    setText(item);
+                    tooltip.setText(item);
+                    setTooltip(tooltip);
+                }
+            }
+        });
+
+        // Добавление Tooltip на указание имени
+        tableName.setCellFactory(column -> new TextFieldTableCell<FileInfo, String>() {
+            private final Tooltip tooltip = new Tooltip();
+    
+                @Override
+                public void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item == null || empty) {
+                        setText(null);
+                        setTooltip(null);
+                    } else {
+                        setText(item);
+                        tooltip.setText(item);
+                        setTooltip(tooltip);
+                    }
+                }
+            });
+
+        // Обработчик двойного клика
+        tableView.setRowFactory(tv -> {
+            TableRow<FileInfo> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && !row.isEmpty()) {
+                    FileInfo rowData = row.getItem();
+                    openFolderWithFile(rowData.getPath());
+                }
+            });
+            return row;
+        });
     }
     
 }
