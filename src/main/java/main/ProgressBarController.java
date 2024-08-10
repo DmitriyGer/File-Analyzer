@@ -51,4 +51,9 @@ public class ProgressBarController {
     public void cancelAnalysis() {
         cancelled = true;
     }
+    
+    @FXML
+    public void handleCancelAction() {
+        cancelAnalysis();
+    }
 }

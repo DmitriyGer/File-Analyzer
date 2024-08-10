@@ -43,9 +43,6 @@ public class DiskAnalyzerChoiceController {
         boolean checkPie = checkPieChart.isSelected();
         boolean checkTree = checkTreeView.isSelected();
 
-        System.out.println(checkPie);
-        System.out.println(checkTree);
-
         // Проверка выбора параметров анализатора
         if (!checkPie && !checkTree) {
             showAlert("Ошибка", "Выберите параметры поиска");
@@ -60,6 +57,10 @@ public class DiskAnalyzerChoiceController {
 
     }
 
+    /**
+     * Загрузка страницы
+     * @param fxmlFile
+     */
     private void loadPage(String fxmlFile) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource(fxmlFile));

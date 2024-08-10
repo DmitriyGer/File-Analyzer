@@ -6,10 +6,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -18,6 +18,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import main.DiskAnalyzer.AnalyzerConductor;
+import main.DiskAnalyzer.DiskAnalysisTask;
 
 import java.io.File;
 import java.net.URL;
@@ -147,29 +148,50 @@ public class DiskAnalyzerConductorController {
         }
     }
 
-    
-
     /**
      * Кнопка запуска анализатора
      * @param event
      */
     public void btnStartAnalys(ActionEvent event) {
+
+        if (selectedDirectory == null) {
+            showAlertERROR("Ошибка", "Выберите диск или папку");
+        }
+
         try {
             if (selectedDirectory != null) {
                 rootTotalSpace = AnalyzerConductor.getDirectorySize(selectedDirectory);
-                TreeItem<StackPane> rootItem = AnalyzerConductor.createTreeItem(selectedDirectory, rootTotalSpace, directoryTreeView);
-                rootItem.setExpanded(true);
-                directoryTreeView.setRoot(rootItem);
-
-                directoryTreeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-                    if (newValue != null) {
-                        File selectedFile = new File(newValue.getValue().getId());
-                        long selectedDirectorySize = selectedFile.isDirectory() ? AnalyzerConductor.getDirectorySize(selectedFile) : rootTotalSpace;
-                        AnalyzerConductor.updateTreeItems(selectedFile, newValue, selectedDirectorySize, directoryTreeView);
-                    }
+    
+                // Открытие окна прогресса
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("ProgressDialogAnalyzer.fxml"));
+                Parent root = loader.load();
+                ProgressBarController progressBarController = loader.getController();
+                Stage progressStage = new Stage();
+                progressStage.initModality(Modality.APPLICATION_MODAL);
+                progressStage.setScene(new Scene(root));
+                progressBarController.setStage(progressStage);
+                progressStage.show();
+    
+                // Запуск задачи анализа
+                DiskAnalysisTask task = new DiskAnalysisTask(selectedDirectory, rootTotalSpace, directoryTreeView);
+                progressBarController.getProgressBar().progressProperty().bind(task.progressProperty());
+                progressBarController.getLabelProgress().textProperty().bind(task.messageProperty());
+    
+                task.setOnSucceeded(e -> progressStage.close());
+                task.setOnCancelled(e -> progressStage.close());
+    
+                // Установка действия для кнопки "Отмена"
+                progressBarController.getBtnCancel().setOnAction(e -> {
+                    task.cancel();
+                    progressBarController.cancelAnalysis();
+                    progressStage.close(); // Закрытие окна прогресса
                 });
+    
+                // Запуск задачи в отдельном потоке
+                new Thread(task).start();
             }
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Произошла ошибка при обработке файлов: " + e.getMessage());
         }
     }
@@ -185,12 +207,23 @@ public class DiskAnalyzerConductorController {
     }
 
     /**
-     * Добавить прогрессБар
+     * Функция вывода об ошибке
+     * @param title
+     * @param message
+     */
+    private void showAlertERROR(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    /**
+     * Доработать функцию остановки работы алгоритма в прогресс баре
      */
     @FXML
     public void initialize() {
         
     }
-
 }
-
