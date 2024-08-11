@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #33343c;" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.AuthorizationRegistrationController">
+   <children>
+      <AnchorPane layoutY="141.0" prefHeight="461.0" prefWidth="800.0" style="-fx-background-color: #fafafa;">
+         <children>
+            <Button fx:id="btnSignUp" layoutX="293.0" layoutY="349.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="217.0" style="-fx-background-color: #33343c;" text="Зарегистрироваться" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <VBox layoutX="75.0" layoutY="130.0" prefHeight="190.0" prefWidth="650.0">
+               <children>
+                  <HBox prefHeight="35.0" prefWidth="472.0">
+                     <children>
+                        <TextField fx:id="signUpName" minHeight="44.0" minWidth="300.0" promptText="Имя" style="-fx-background-color: #fafafa; -fx-border-color: silver; -fx-border-radius: 5;">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="50.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <TextField fx:id="signUpLastname" minHeight="44.0" minWidth="300.0" promptText="Фамилия" style="-fx-background-color: #fafafa; -fx-border-color: silver; -fx-border-radius: 5;">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="52.0" prefWidth="650.0">
+                     <children>
+                        <TextField fx:id="signUpEmail" minHeight="44.0" minWidth="300.0" promptText="e-mail" style="-fx-background-color: #fafafa; -fx-border-color: silver; -fx-border-radius: 5;">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="50.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <VBox minWidth="100.0" prefHeight="30.0" prefWidth="300.0">
+                           <children>
+                              <Label prefHeight="21.0" prefWidth="301.0" text="Выберите пол:">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <HBox prefHeight="16.0" prefWidth="300.0">
+                                 <children>
+                                    <CheckBox fx:id="signUpCheckMan" mnemonicParsing="false" text="Мужской">
+                                       <HBox.margin>
+                                          <Insets right="50.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </CheckBox>
+                                    <CheckBox fx:id="signUpCheckWoman" mnemonicParsing="false" text="Женский">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </CheckBox>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="28.0" prefWidth="472.0">
+                     <children>
+                        <TextField fx:id="fieldLogin" minHeight="44.0" minWidth="300.0" promptText="Логин" style="-fx-background-color: #fafafa; -fx-border-color: silver; -fx-border-radius: 5;">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="50.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <PasswordField fx:id="fieldPassword" minHeight="44.0" minWidth="300.0" promptText="Пароль" style="-fx-background-color: #fafafa; -fx-border-color: silver; -fx-border-radius: 5;">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </PasswordField>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox fx:id="boxAuthorization" prefHeight="100.0" prefWidth="200.0" visible="false">
+                     <children>
+                        <Label prefHeight="40.0" prefWidth="227.0" text="У вас уже имеется аккаунт.">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="btnAuthorization" mnemonicParsing="false" onAction="#btnAuthorization" prefHeight="39.0" prefWidth="231.0" style="-fx-background-color: #fafafa;" text="Выполнить авторизацию" textFill="#39bf17">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <Label layoutX="298.0" layoutY="50.0" text="Регистрация" textFill="#404040">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <Label layoutX="107.0" layoutY="35.0" text="НАЗВАНИЕ ПРИЛОЖЕНИЯ" textFill="WHITE">
+         <font>
+            <Font size="48.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

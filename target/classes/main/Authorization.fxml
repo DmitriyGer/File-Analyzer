@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #33343c;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.AuthorizationController" stylesheets="@styles.css">
+   <children>
+      <AnchorPane layoutY="141.0" prefHeight="461.0" prefWidth="800.0" style="-fx-background-color: #fafafa;">
+         <children>
+            <TextField fx:id="fieldLogin" layoutX="221.0" layoutY="137.0" prefHeight="30.0" prefWidth="360.0" promptText="Логин" style="-fx-background-color: #fafafa; -fx-border-color: silver; -fx-border-radius: 5;">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </TextField>
+            <PasswordField fx:id="fieldPassword" layoutX="221.0" layoutY="200.0" prefHeight="30.0" prefWidth="360.0" promptText="Пароль" style="-fx-background-color: #fafafa; -fx-border-color: silver; -fx-border-radius: 5;">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </PasswordField>
+            <Label layoutX="289.0" layoutY="60.0" text="Авторизация" textFill="#393939">
+               <font>
+                  <Font size="37.0" />
+               </font>
+            </Label>
+            <Button fx:id="btnAuthSigIn" layoutX="339.0" layoutY="301.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="122.0" style="-fx-background-color: #33343c;" text="Войти" textFill="WHITE">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Button>
+            <Label fx:id="labelError" layoutX="233.0" layoutY="247.0" text="Неверный логин или пароль" textFill="#ff0f00" visible="false">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <Label layoutX="107.0" layoutY="35.0" text="НАЗВАНИЕ ПРИЛОЖЕНИЯ" textFill="WHITE">
+         <font>
+            <Font size="48.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnLoginSignUp" layoutX="639.0" layoutY="14.0" mnemonicParsing="false" style="-fx-background-color: #F39C63;" text="Зарегестрироваться" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

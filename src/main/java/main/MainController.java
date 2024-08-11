@@ -7,8 +7,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class MainController {
 
@@ -17,6 +21,9 @@ public class MainController {
 
     @FXML
     private URL location;
+
+    @FXML
+    private Button btnAuthorization;
 
     @FXML
     private Button btnConnectAndroid;
@@ -41,6 +48,28 @@ public class MainController {
 
     @FXML
     private AnchorPane contentPane;
+
+    @FXML
+    void btnAuthorization(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Authorization.fxml"));
+            Parent root = fxmlLoader.load();
+            AuthorizationController controller = fxmlLoader.getController();
+            Stage newStage = new Stage();
+            controller.setStage(newStage);
+
+            newStage.setResizable(false);
+
+            newStage.setTitle("Вход");
+            newStage.setScene(new Scene(root));
+
+            newStage.initModality(Modality.APPLICATION_MODAL);
+            newStage.initStyle(StageStyle.DECORATED);
+            newStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     void btnShowFindDuplicates(ActionEvent event) {
@@ -89,6 +118,10 @@ public class MainController {
         }
     }
 
+    /**
+     * 1. Вместо кнопки "Войти" после авторизации должна появляться label с Логином, а при нажатии на Label 
+     *    должно вылазить под ним окно, где будет кнопка выйти
+     */
     @FXML
     void initialize() {
  

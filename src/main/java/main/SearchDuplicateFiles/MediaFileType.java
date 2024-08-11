@@ -5,7 +5,7 @@ package main.SearchDuplicateFiles;
  */
 public class MediaFileType implements FileType{
 
-    private static final String[] EXTENSIONS = {"png", "jpeg", "JPG", "gif", "mp4", "mp3", "waw", "avi"};
+    private static final String[] EXTENSIONS = {"png", "jpeg", "jpg", "JPG", "gif", "mp4", "mp3", "waw", "avi"};
 
     @Override
     public boolean isMatch(String filename) {

@@ -1,0 +1,63 @@
+/* AuthorizationRegistration.fxml */
+
+#btnSignUp {
+    -fx-background-color: #33343c;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+}
+
+#btnSignUp:pressed {
+    -fx-background-color: #2a2a35;
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+    -fx-scale-z: 0.95;
+}
+
+
+/* Authorization.fxml */
+
+#btnAuthSigIn {
+    -fx-background-color: #33343c;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+}
+
+#btnAuthSigIn:pressed {
+    -fx-background-color: #2a2a35;
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+    -fx-scale-z: 0.95;
+}
+
+
+/* Main.fxml */
+
+#btnAuthorization {
+    -fx-background-color: #33343c;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+#btnAuthorization:pressed {
+    -fx-background-color: #2a2a35;
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+    -fx-scale-z: 0.95;
+}
+
+
+/* Если не разберусьс их работой, то удалить */
+
+@font-face {
+    font-family: 'Italic';
+    src: url('../../resources/fonts/italic.ttf');
+}
+
+@font-face {
+    font-family: 'roseMByGeevara';
+    src: url('../../resources/fonts/roseMByGeevara.ttf');
+}
+
+roseMByGeevara.ttf .custom-font {
+    -fx-font-family: 'roseMByGeevara';
+}

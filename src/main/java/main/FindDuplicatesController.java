@@ -133,25 +133,31 @@ public class FindDuplicatesController {
      */
     @FXML
     void btnStartSearch(ActionEvent event) {
+        
         fileDataList.clear();
         tableView.setItems(FXCollections.observableArrayList());
+
         boolean nameSelected = checkName.isSelected();
         boolean sizeSelected = checkSize.isSelected();
         boolean contentSelected = checkContent.isSelected();
-        if (!nameSelected && !sizeSelected && !contentSelected) {
-            showAlertERROR("Ошибка", "Выберите параметры поиска");
-            return;
-        }
+
         String directoryPath = textWay.getText();
         if (directoryPath == null || directoryPath.isEmpty()) {
             showAlertERROR("Ошибка", "Выберите папку для поиска дубликатов файла");
             return;
         }
+
+        if (!nameSelected && !sizeSelected && !contentSelected) {
+            showAlertERROR("Ошибка", "Выберите параметры поиска");
+            return;
+        }
+
         String dataType = choiceDataType.getValue();
         if (dataType == null) {
             showAlertERROR("Ошибка", "Выберите тип данных");
             return;
         }
+
         FileType fileType = getFileType(dataType);
         if (fileType == null) {
             showAlertERROR("Ошибка", "Неправильный тип данных");
@@ -378,6 +384,8 @@ public class FindDuplicatesController {
      * ЕСТЬ 8. Добавить прогресс бар. 
      *      8.1. Реализовать прогресс бар, показывающий проценты загрузки))
      * ЕСТЬ 9. Поработать над отображением размера файла
+     * 10. В новом окне убрать кнопку "Открыть в новом окне" и убрать текст рядом с ней.
+     *     В анализаторе сделать тоже самое
      */
     @FXML
     void initialize() {
