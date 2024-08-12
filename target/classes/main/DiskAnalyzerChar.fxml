@@ -10,13 +10,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="750.0" minWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.DiskAnalyzerCharController">
+<BorderPane minHeight="710.0" minWidth="800.0" style="-fx-background-color: #7cc3b3;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.DiskAnalyzerCharController">
    <top>
-      <VBox prefHeight="135.0" prefWidth="775.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="127.0" prefWidth="800.0" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Анализатор дискового пространства">
+            <Label text="Анализатор дискового пространства" textFill="#bd6626">
                <font>
-                  <Font size="24.0" />
+                  <Font name="Bookman Old Style" size="24.0" />
                </font>
                <VBox.margin>
                   <Insets left="180.0" top="14.0" />
@@ -24,7 +24,7 @@
             </Label>
             <Label text="Выберите диск или папку для анализа дискового пространства">
                <font>
-                  <Font size="18.0" />
+                  <Font name="Bookman Old Style" size="18.0" />
                </font>
                <VBox.margin>
                   <Insets left="14.0" />
@@ -34,42 +34,60 @@
                <children>
                   <Label prefHeight="30.0" prefWidth="56.0" text="Путь:">
                      <font>
-                        <Font size="18.0" />
+                        <Font name="Bookman Old Style" size="18.0" />
                      </font>
                      <HBox.margin>
                         <Insets left="14.0" />
                      </HBox.margin>
                   </Label>
                   <TextField fx:id="textWay" editable="false" prefHeight="26.0" prefWidth="388.0" promptText="Выберите папку" />
-                  <Button fx:id="btnChoosingDirectory" mnemonicParsing="false" onAction="#btnChoosingDirectory" prefHeight="26.0" prefWidth="79.0" text="Выбрать" />
-                  <Button fx:id="btnClearWayAndPieChart" mnemonicParsing="false" onAction="#btnClearWayAndPieChart" prefHeight="26.0" prefWidth="79.0" text="Очистить">
+                  <Button fx:id="btnChoosingDirectory" mnemonicParsing="false" onAction="#btnChoosingDirectory" prefHeight="26.0" prefWidth="79.0" style="-fx-background-color: #19a2a7;" text="Выбрать">
+                     <font>
+                        <Font name="Bookman Old Style" size="12.0" />
+                     </font></Button>
+                  <Button fx:id="btnClearWayAndPieChart" mnemonicParsing="false" onAction="#btnClearWayAndPieChart" prefHeight="26.0" prefWidth="79.0" style="-fx-background-color: #19a2a7;" text="Очистить">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
+                     <font>
+                        <Font name="Bookman Old Style" size="12.0" />
+                     </font>
                   </Button>
                </children>
             </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <HBox prefHeight="29.0" prefWidth="786.0">
                <children>
-                  <Button fx:id="btnStartAnalys" mnemonicParsing="false" onAction="#btnStartAnalys" prefHeight="26.0" prefWidth="79.0" text="Старт">
+                  <Button fx:id="btnStartAnalys" mnemonicParsing="false" onAction="#btnStartAnalys" prefHeight="26.0" prefWidth="79.0" style="-fx-background-color: #19a2a7;" text="Старт">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>
-                  </Button>
-                  <Button fx:id="btnGoBack" mnemonicParsing="false" onAction="#btnGoBack" prefHeight="26.0" prefWidth="79.0" text="Назад">
-                     <HBox.margin>
-                        <Insets right="5.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button fx:id="btnNewWindow" mnemonicParsing="false" onAction="#btnNewWindow" prefHeight="25.0" prefWidth="145.0" text="Открыть в новом окне">
-                     <HBox.margin>
-                        <Insets right="5.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Label text="Для удобства использования, откройте в новом окне">
                      <font>
-                        <Font size="16.0" />
+                        <Font name="Bookman Old Style" size="12.0" />
                      </font>
+                  </Button>
+                  <Button fx:id="btnGoBack" mnemonicParsing="false" onAction="#btnGoBack" prefHeight="26.0" prefWidth="79.0" style="-fx-background-color: #19a2a7;" text="Назад">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="Bookman Old Style" size="12.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnNewWindow" mnemonicParsing="false" onAction="#btnNewWindow" prefHeight="25.0" prefWidth="157.0" style="-fx-background-color: #19a2a7;" text="Открыть в новом окне">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="Bookman Old Style" size="12.0" />
+                     </font>
+                  </Button>
+                  <Label fx:id="textNewWindow" text="Для удобства использования, откройте в новом окне">
+                     <font>
+                        <Font name="Bookman Old Style" size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="5.0" />
+                     </HBox.margin>
                   </Label>
                </children>
                <VBox.margin>

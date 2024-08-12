@@ -18,7 +18,7 @@ public class App extends Application {
 
         stage.setResizable(false);
 
-        stage.setTitle("Файловая утилита");
+        stage.setTitle("Feeler Manager");
         stage.setScene(scene);
         stage.show();
     }

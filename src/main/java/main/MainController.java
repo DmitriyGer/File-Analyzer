@@ -9,6 +9,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -50,6 +52,9 @@ public class MainController {
     private AnchorPane contentPane;
 
     @FXML
+    private ImageView viewPhoto;
+
+    @FXML
     void btnAuthorization(ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Authorization.fxml"));
@@ -60,7 +65,7 @@ public class MainController {
 
             newStage.setResizable(false);
 
-            newStage.setTitle("Вход");
+            newStage.setTitle("Feeler Manager. Авторизация");
             newStage.setScene(new Scene(root));
 
             newStage.initModality(Modality.APPLICATION_MODAL);
@@ -109,6 +114,13 @@ public class MainController {
 
     }
 
+    // ToolTip
+    private void addTooltip(Button button, String tooltipText) {
+        Tooltip tooltip = new Tooltip(tooltipText);
+        button.setTooltip(tooltip);
+    }
+
+    // Загрузчик нужной страницы
     private void loadPage(String fxmlFile) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource(fxmlFile));
@@ -124,7 +136,17 @@ public class MainController {
      */
     @FXML
     void initialize() {
- 
+
+        addTooltip(btnAuthorization, "Авторизация");
+        addTooltip(btnConnectAndroid, "Подключение к Android");
+        addTooltip(btnDiskAnalyzer, "Анализатор дискового пространства");
+        addTooltip(btnFindDuplicates, "Поиск дубликатов файлов");
+        addTooltip(btnFixMetadata, "Исправление метаданных");
+        addTooltip(btnSortMediaFiles, "Сортировка медиафайлов");
+        addTooltip(btnInstruction, "Инструкция");
+        addTooltip(btnToDeveloper, "О разработчике");
+        
+   
     }
 
 }

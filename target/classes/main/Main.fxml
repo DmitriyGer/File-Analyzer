@@ -4,96 +4,135 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="985.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.MainController">
    <left>
-      <VBox alignment="TOP_CENTER" prefHeight="750.0" prefWidth="185.0" style="-fx-background-color: #686461;" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" prefHeight="750.0" prefWidth="185.0" style="-fx-background-color: #C47E8E;" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Меню" textFill="WHITE">
+            <Label styleClass="custom-font" text="Меню" textFill="WHITE">
                <font>
-                  <Font size="36.0" />
+                  <Font name="Bookman Old Style" size="36.0" />
                </font>
                <VBox.margin>
-                  <Insets top="20.0" />
+                  <Insets />
                </VBox.margin>
             </Label>
-            <Button fx:id="btnFindDuplicates" mnemonicParsing="false" onAction="#btnShowFindDuplicates" prefHeight="30.0" prefWidth="160.0" style="-fx-background-color: #9E9B98;" styleClass="custom-font" text="Поиск дубликатов файлов" textFill="WHITE">
+            <Button fx:id="btnFindDuplicates" alignment="CENTER" mnemonicParsing="false" onAction="#btnShowFindDuplicates" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: #19a2a7;" text="Поиск дубликатов файлов" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" top="20.0" />
                </VBox.margin>
                <font>
-                  <Font size="14.0" />
+                  <Font name="Bookman Old Style" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnSortMediaFiles" mnemonicParsing="false" onAction="#btnShowSortMediaFiles" prefHeight="30.0" prefWidth="160.0" style="-fx-background-color: #9E9B98;" text="Сортировка медиафайлов" textFill="WHITE">
+            <Button fx:id="btnSortMediaFiles" alignment="CENTER" mnemonicParsing="false" onAction="#btnShowSortMediaFiles" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: #19a2a7;" text="Сортировка медиафайлов" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" top="20.0" />
                </VBox.margin>
                <font>
-                  <Font size="14.0" />
+                  <Font name="Bookman Old Style" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnFixMetadata" mnemonicParsing="false" onAction="#btnShowFixMetadata" prefHeight="30.0" prefWidth="160.0" style="-fx-background-color: #9E9B98;" text="Исправление метаданных" textFill="WHITE">
+            <Button fx:id="btnFixMetadata" mnemonicParsing="false" onAction="#btnShowFixMetadata" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: #19a2a7;" text="Исправление метаданных" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" top="20.0" />
                </VBox.margin>
                <font>
-                  <Font size="14.0" />
+                  <Font name="Bookman Old Style" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnDiskAnalyzer" mnemonicParsing="false" onAction="#btnShowDiskAnalyzer" prefHeight="30.0" prefWidth="160.0" style="-fx-background-color: #9E9B98;" text="Анализатор дискового пространства" textFill="WHITE">
+            <Button fx:id="btnDiskAnalyzer" mnemonicParsing="false" onAction="#btnShowDiskAnalyzer" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: #19a2a7;" text="Анализ диска" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" top="20.0" />
                </VBox.margin>
                <font>
-                  <Font size="14.0" />
+                  <Font name="Bookman Old Style" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnConnectAndroid" mnemonicParsing="false" onAction="#btnShowConnectAndroid" prefHeight="30.0" prefWidth="160.0" style="-fx-background-color: #9E9B98;" text="Подключение к Android" textFill="WHITE">
+            <Button fx:id="btnConnectAndroid" mnemonicParsing="false" onAction="#btnShowConnectAndroid" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: #19a2a7;" text="Подключение к Android" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" top="20.0" />
                </VBox.margin>
                <font>
-                  <Font size="14.0" />
+                  <Font name="Bookman Old Style" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnInstruction" mnemonicParsing="false" onAction="#btnShowInstruction" prefHeight="30.0" prefWidth="160.0" style="-fx-background-color: #9E9B98;" text="Инструкция" textFill="WHITE">
+            <Button fx:id="btnInstruction" mnemonicParsing="false" onAction="#btnShowInstruction" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: #19a2a7;" text="Инструкция" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>
                <font>
-                  <Font size="14.0" />
+                  <Font name="Bookman Old Style" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnToDeveloper" mnemonicParsing="false" onAction="#btnShowToDeveloper" prefHeight="30.0" prefWidth="160.0" style="-fx-background-color: #9E9B98;" text="О разработчике" textFill="WHITE">
+            <Button fx:id="btnToDeveloper" mnemonicParsing="false" onAction="#btnShowToDeveloper" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: #19a2a7;" text="О разработчике" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" top="20.0" />
                </VBox.margin>
                <font>
-                  <Font size="14.0" />
+                  <Font name="Bookman Old Style" size="14.0" />
                </font>
             </Button>
          </children>
       </VBox>
    </left>
    <center>
-      <AnchorPane fx:id="contentPane" prefHeight="710.0" prefWidth="800.0" style="-fx-background-color: #686461;" BorderPane.alignment="CENTER" />
+      <AnchorPane fx:id="contentPane" prefHeight="710.0" prefWidth="800.0" style="-fx-background-color: #7cc3b3;" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="imagePhoto" fitHeight="552.0" fitWidth="320.0" layoutX="247.0" layoutY="138.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/photo.png" />
+               </image></ImageView>
+            <Label layoutX="167.0" layoutY="14.0" text="Feeler Manager">
+               <font>
+                  <Font size="68.0" />
+               </font>
+               <textFill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.24074074625968933" green="0.5" blue="0.3401234447956085" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="1.0" green="0.48235294222831726" blue="0.13333334028720856" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </textFill>
+            </Label>
+         </children></AnchorPane>
    </center>
    <top>
-      <ButtonBar prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #686461;" BorderPane.alignment="CENTER">
-        <buttons>
-          <Button fx:id="btnAuthorization" mnemonicParsing="false" onAction="#btnAuthorization" style="-fx-background-color: #9E9B98;" text="Войти" textFill="WHITE">
-               <font>
-                  <Font size="14.0" />
-               </font></Button>
-        </buttons>
-         <padding>
-            <Insets left="14.0" right="14.0" />
-         </padding>
-      </ButtonBar>
+      <HBox prefHeight="35.0" prefWidth="985.0" BorderPane.alignment="CENTER">
+         <children>
+            <AnchorPane prefHeight="48.0" prefWidth="370.0" style="-fx-background-color: #C47E8E;" />
+            <ButtonBar prefHeight="45.0" prefWidth="985.0" style="-fx-background-color: #7cc3b3;">
+              <buttons>
+                <Button fx:id="btnAuthorization" minWidth="69.0" mnemonicParsing="false" onAction="#btnAuthorization" prefHeight="30.0" style="-fx-background-color: #19a2a7;" text="Войти" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+              </buttons>
+               <padding>
+                  <Insets left="14.0" right="5.0" />
+               </padding>
+            </ButtonBar>
+         </children>
+      </HBox>
    </top>
 </BorderPane>

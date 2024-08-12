@@ -78,7 +78,7 @@ public class AuthorizationRegistrationController {
      * @param event
      */
     @FXML
-    void btnAuthorization(ActionEvent event) {
+    void btnAuthorizationPressed(ActionEvent event) {
         try {
             Stage currentStage = (Stage) btnAuthorization.getScene().getWindow();
             currentStage.close();
@@ -90,7 +90,7 @@ public class AuthorizationRegistrationController {
             controller.setStage(newStage);
     
             newStage.setResizable(false);
-            newStage.setTitle("Вход");
+            newStage.setTitle("Feeler Manager. Авторизация");
             newStage.setScene(new Scene(root));
     
             newStage.initModality(Modality.APPLICATION_MODAL);
@@ -205,7 +205,7 @@ public class AuthorizationRegistrationController {
      */
     private void showSuccessAlert(String message) {
         Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Операция завершена");
+        alert.setTitle("Feeler Manager. Операция завершена");
         alert.setHeaderText(null); // Убираем заголовок
         alert.setContentText(message);
 
@@ -217,6 +217,12 @@ public class AuthorizationRegistrationController {
 
         // Установка изображения в качестве иконки
         alert.setGraphic(imageView);
+
+        alert.setOnHidden(evt -> {
+            if (stage != null) {
+                stage.close();
+            }
+        });
 
         alert.showAndWait();
     }
@@ -236,6 +242,8 @@ public class AuthorizationRegistrationController {
      *    сделать переход на страницу войти.
      * 
      * ЕСТЬ 3. Решено иначе. Добавить в окно зарегистрироваться checkBox рядом с логином (Такой же, как почта)
+     * 
+     * В процессе 4. После успешной регистрации закрывать окно
      */
     @FXML
     void initialize() {
@@ -262,7 +270,7 @@ public class AuthorizationRegistrationController {
         btnSignUp.setOnAction(event -> {
             String validationMessage = validateFields();
             if (!validationMessage.isEmpty()) {
-                showAlertERROR("Ошибка регистрации", validationMessage);
+                showAlertERROR("Feeler Manager. Ошибка регистрации", validationMessage);
             } else {
                 String email = signUpEmail.getText();
                 try {
@@ -274,7 +282,7 @@ public class AuthorizationRegistrationController {
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
-                    showAlertERROR("Ошибка", "Ошибка при доступе к базе данных.");
+                    showAlertERROR("Feeler Manager. Ошибка", "Ошибка при доступе к базе данных.");
                 }
             }
         });

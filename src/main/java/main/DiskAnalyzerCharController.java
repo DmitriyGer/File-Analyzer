@@ -1,9 +1,11 @@
 package main;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.text.DecimalFormat;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Stack;
@@ -18,6 +20,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.Label;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -29,6 +32,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import main.DiskAnalyzer.AnalyzerChar;
+import java.awt.Desktop;
 
 public class DiskAnalyzerCharController {
 
@@ -74,6 +78,9 @@ public class DiskAnalyzerCharController {
     @FXML
     private TextField textWay;
 
+    @FXML
+    private Label textNewWindow;
+
     public void setStage(Stage stage) {
         this.stage = stage;
     }
@@ -118,11 +125,12 @@ public class DiskAnalyzerCharController {
             DiskAnalyzerCharController controller = fxmlLoader.getController();
             Stage newStage = new Stage();
             controller.setStage(newStage);
+            controller.hideNewWindowButton();
 
             // Передача данных в новый контроллер
             controller.setData(selectedDirectory, sizes, previousPaths);
 
-            newStage.setTitle("Disk Analyzer");
+            newStage.setTitle("Feeler Manager. Анализатор дискового пространства");
             newStage.setScene(new Scene(root));
 
             // Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
@@ -137,6 +145,18 @@ public class DiskAnalyzerCharController {
             newStage.show();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Метод для скрытия кнопки
+     */
+    private void hideNewWindowButton() {
+        if (btnNewWindow != null) {
+            btnNewWindow.setVisible(false);
+        }
+        if (textNewWindow != null) {
+            textNewWindow.setVisible(false);
         }
     }
 
@@ -208,7 +228,7 @@ public class DiskAnalyzerCharController {
             }
         } else {
             // Показать предупреждающее сообщение
-            showAlertERROR("Ошибка", "Выберите диск или папку");
+            showAlertERROR("Feeler Manager. Ошибка", "Выберите диск или папку");
         }
     }
 
@@ -245,16 +265,44 @@ public class DiskAnalyzerCharController {
 
         pieChart.getData().forEach(data -> {
             data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
-                String dir = data.getName().split(" \\(")[0]; // Удаляем информацию о размере
-                File file = new File(dir);
-                if (file.isDirectory()) {
-                    previousPaths.push(path);
-                    refillChart(dir);
+                if (event.getClickCount() == 2) { // Проверяем двойной клик
+                    String dir = data.getName().split(" \\(")[0]; // Удаляем информацию о размере
+                    File file = new File(dir);
+                    try {
+                        openFileInExplorer(file);
+                    } catch (Exception e) {
+                        showAlertERROR("Feeler Manager. Ошибка", "Не удалось открыть файл: " + file.getPath(), e.getMessage());
+                    }
                 } else {
-                    showAlertINFO("Информация", "Внимание!", "Выбранный элемент является файлом.");
+                    String dir = data.getName().split(" \\(")[0]; // Удаляем информацию о размере
+                    File file = new File(dir);
+                    if (file.isDirectory()) {
+                        previousPaths.push(path);
+                        refillChart(dir);
+                    }
                 }
             });
         });
+    }
+
+    @SuppressWarnings("deprecation")
+    private void openFileInExplorer(File file) {
+        try {
+            if (Desktop.isDesktopSupported()) {
+                Desktop desktop = Desktop.getDesktop();
+                if (desktop.isSupported(Desktop.Action.OPEN)) {
+                    if (file.isDirectory()) {
+                        desktop.open(file);
+                    } else {
+                        String command = String.format("explorer /select,\"%s\"", file.getAbsolutePath());
+                        Runtime.getRuntime().exec(command);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlertERROR("Feeler Manager. Ошибка открытия файла", "Не удалось открыть файл в проводнике.");
+        }
     }
 
     /**
@@ -263,8 +311,8 @@ public class DiskAnalyzerCharController {
      * @param header
      * @param content
      */
-    private void showAlertINFO(String title, String header, String content) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    private void showAlertERROR(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);
@@ -302,30 +350,6 @@ public class DiskAnalyzerCharController {
         }
     }  
 
-    /**
-     * 1. Реализовать на коненчной директории открытие медиафайлов или переход в директорию, если
-     *    она не является системной. Должно выводится информационное окно, в котором будет написано
-     *    название файла, путь до него, кнопка "Закрыть", "Открыть", "Показать в проводнике"
-     * 
-     * 2. Исправить PieChart, чтобы его размеры были статичными
-     */
-
-
-
-    /**
-     * Для добавления новой функции:
-     * 1. Реализовать файл процессора, который будет запускать файл либо с диаграммой, либо с
-     *    проводником, выбор зависет от пользователя. Выбор осуществляется при помощи CheckBox
-     *    Пример реализации: FindDuplicatesController
-     * 
-     * 2. Переместить файлы для диаграммы с основного контроллера в свой собственный
-     * 3. Переместить исполняющие файлы проводника с тестовой версии проекта project2 
-     *    в директории GB
-     * 4. Переместить файлы для проводника с тестовой версии проекта project2 в 
-     *    директории GB
-     * 5. Доработать недочеты указанные в коментарии выше
-     * 6. Протестировать
-     */
     @FXML
     void initialize() {
         // pieChart.setPrefSize(400, 400);

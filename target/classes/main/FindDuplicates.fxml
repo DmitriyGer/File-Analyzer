@@ -12,48 +12,54 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.FindDuplicatesController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="800.0" style="-fx-background-color: #7cc3b3;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.FindDuplicatesController">
    <children>
       <Label layoutX="16.0" layoutY="83.0" prefHeight="30.0" prefWidth="56.0" text="Путь:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="83.0">
          <font>
-            <Font size="18.0" />
+            <Font name="Bookman Old Style" size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="textWay" editable="false" layoutX="72.0" layoutY="85.0" prefHeight="26.0" prefWidth="388.0" promptText="Выберите папку" AnchorPane.leftAnchor="72.0" AnchorPane.topAnchor="85.0" />
-      <Button fx:id="btnChoosingDirectory" layoutX="460.0" layoutY="85.0" mnemonicParsing="false" onAction="#btnChoosingDirectory" prefHeight="26.0" prefWidth="79.0" text="Выбрать" AnchorPane.leftAnchor="460.0" AnchorPane.topAnchor="85.0" />
-      <Label layoutX="252.0" layoutY="14.0" text="Поиск дубликатов файлов" AnchorPane.topAnchor="14.0">
+      <TextField fx:id="textWay" editable="false" layoutX="72.0" layoutY="85.0" prefHeight="26.0" prefWidth="388.0" promptText="Выберите папку" AnchorPane.leftAnchor="72.0" AnchorPane.topAnchor="85.0">
          <font>
-            <Font size="24.0" />
+            <Font name="Bookman Old Style" size="12.0" />
+         </font></TextField>
+      <Button fx:id="btnChoosingDirectory" layoutX="460.0" layoutY="85.0" mnemonicParsing="false" onAction="#btnChoosingDirectory" prefHeight="26.0" prefWidth="79.0" style="-fx-background-color: #41B3A3;" text="Выбрать" AnchorPane.leftAnchor="460.0" AnchorPane.topAnchor="85.0">
+         <font>
+            <Font name="Bookman Old Style" size="12.0" />
+         </font></Button>
+      <Label layoutX="255.0" layoutY="14.0" text="Поиск дубликатов файлов" textFill="#bd6626" AnchorPane.topAnchor="14.0">
+         <font>
+            <Font name="Bookman Old Style" size="24.0" />
          </font>
       </Label>
       <Label layoutX="14.0" layoutY="57.0" text="Выберите папку для нахождения дубликатов" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="57.0">
          <font>
-            <Font size="18.0" />
+            <Font name="Bookman Old Style" size="18.0" />
          </font>
       </Label>
       <Label layoutX="14.0" layoutY="113.0" text="Парметры поиска:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="113.0">
          <font>
-            <Font size="18.0" />
+            <Font name="Bookman Old Style" size="18.0" />
          </font>
       </Label>
       <CheckBox fx:id="checkName" layoutX="14.0" layoutY="140.0" mnemonicParsing="false" text="по названию" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="140.0">
          <font>
-            <Font size="14.0" />
+            <Font name="Bookman Old Style" size="14.0" />
          </font>
       </CheckBox>
       <CheckBox fx:id="checkSize" layoutX="142.0" layoutY="152.0" mnemonicParsing="false" text="по размеру" AnchorPane.leftAnchor="142.0" AnchorPane.topAnchor="140.0">
          <font>
-            <Font size="14.0" />
+            <Font name="Bookman Old Style" size="14.0" />
          </font>
       </CheckBox>
       <CheckBox fx:id="checkContent" layoutX="260.0" layoutY="152.0" mnemonicParsing="false" text="по содержимому" AnchorPane.leftAnchor="260.0" AnchorPane.topAnchor="140.0">
          <font>
-            <Font size="14.0" />
+            <Font name="Bookman Old Style" size="14.0" />
          </font>
       </CheckBox>
       <Label layoutX="14.0" layoutY="160.0" text="Выберите тип данных для поиска:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="160.0">
          <font>
-            <Font size="18.0" />
+            <Font name="Bookman Old Style" size="18.0" />
          </font>
       </Label>
       <TableView fx:id="tableView" layoutY="219.0" prefHeight="534.0" prefWidth="800.0" AnchorPane.bottomAnchor="-3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="219.0">
@@ -67,18 +73,24 @@
       </TableView>
       <HBox layoutX="2.0" layoutY="187.0" prefHeight="27.0" prefWidth="800.0">
          <children>
-            <ChoiceBox fx:id="choiceDataType" prefHeight="27.0" prefWidth="212.0" />
-            <Button fx:id="btnStartSearch" mnemonicParsing="false" onAction="#btnStartSearch" prefHeight="27.0" prefWidth="106.0" text="Начать поиск">
+            <ChoiceBox fx:id="choiceDataType" prefHeight="27.0" prefWidth="191.0" style="-fx-background-color: #41B3A3;" />
+            <Button fx:id="btnStartSearch" mnemonicParsing="false" onAction="#btnStartSearch" prefHeight="27.0" prefWidth="106.0" style="-fx-background-color: #41B3A3;" text="Начать поиск">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
+               <font>
+                  <Font name="Bookman Old Style" size="12.0" />
+               </font>
             </Button>
-            <Button fx:id="btnNewWindow" mnemonicParsing="false" onAction="#btnNewWindow" prefHeight="27.0" prefWidth="142.0" text="Открыть в новом окне">
+            <Button fx:id="btnNewWindow" mnemonicParsing="false" onAction="#btnNewWindow" prefHeight="27.0" prefWidth="156.0" style="-fx-background-color: #41B3A3;" text="Открыть в новом окне">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
+               <font>
+                  <Font name="Bookman Old Style" size="12.0" />
+               </font>
             </Button>
-            <Label prefHeight="17.0" prefWidth="295.0" text="Для удобства использования, откройте в новом окне">
+            <Label fx:id="textNewWindow" prefHeight="17.0" prefWidth="295.0" text="Для удобства использования, откройте в новом окне">
                <HBox.margin>
                   <Insets left="5.0" top="10.0" />
                </HBox.margin>

@@ -12,44 +12,50 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.CorrectingMetadataController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="800.0" style="-fx-background-color: #7cc3b3;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.CorrectingMetadataController">
    <children>
       <Label layoutX="26.0" layoutY="93.0" prefHeight="30.0" prefWidth="56.0" text="Путь:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="83.0">
          <font>
-            <Font size="18.0" />
+            <Font name="Bookman Old Style" size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="textWay" editable="false" layoutX="73.0" layoutY="95.0" prefHeight="26.0" prefWidth="388.0" promptText="Выберите папку с файлами или файл" AnchorPane.leftAnchor="72.0" AnchorPane.topAnchor="85.0" />
-      <Button fx:id="btnChoosingDirectory" layoutX="460.0" layoutY="85.0" mnemonicParsing="false" onAction="#btnChoosingDirectory" prefHeight="26.0" prefWidth="79.0" text="Выбрать" AnchorPane.leftAnchor="460.0" AnchorPane.topAnchor="85.0" />
+      <TextField fx:id="textWay" editable="false" layoutX="73.0" layoutY="95.0" prefHeight="25.0" prefWidth="388.0" promptText="Выберите папку с файлами или файл" AnchorPane.leftAnchor="72.0" AnchorPane.topAnchor="85.0">
+         <font>
+            <Font name="Bookman Old Style" size="12.0" />
+         </font></TextField>
+      <Button fx:id="btnChoosingDirectory" layoutX="460.0" layoutY="85.0" mnemonicParsing="false" onAction="#btnChoosingDirectory" prefHeight="25.0" prefWidth="87.0" style="-fx-background-color: #19a2a7;" text="Выбрать" AnchorPane.leftAnchor="460.0" AnchorPane.topAnchor="85.0">
+         <font>
+            <Font name="Bookman Old Style" size="12.0" />
+         </font></Button>
       <Label layoutX="24.0" layoutY="67.0" text="Выберите папку с файлами/файл для исправление метаданных" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="57.0">
          <font>
-            <Font size="18.0" />
+            <Font name="Bookman Old Style" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="273.0" layoutY="23.0" text="Исправление метаданных" AnchorPane.topAnchor="14.0">
+      <Label layoutX="273.0" layoutY="23.0" text="Исправление метаданных" textFill="#bd6626" AnchorPane.topAnchor="14.0">
          <font>
-            <Font size="24.0" />
+            <Font name="Bookman Old Style" size="24.0" />
          </font>
       </Label>
       <Label layoutX="24.0" layoutY="123.0" text="Парметры поиска:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="113.0">
          <font>
-            <Font size="18.0" />
+            <Font name="Bookman Old Style" size="18.0" />
          </font>
       </Label>
-      <Button fx:id="btnStartScan" layoutX="14.0" layoutY="246.0" mnemonicParsing="false" onAction="#btnStartSearch" text="Сканировать" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="250.0">
+      <Button fx:id="btnStartScan" layoutX="14.0" layoutY="246.0" mnemonicParsing="false" onAction="#btnStartSearch" style="-fx-background-color: #19a2a7;" text="Сканировать" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="250.0">
          <font>
-            <Font size="14.0" />
+            <Font name="Bookman Old Style" size="12.0" />
          </font>
       </Button>
-      <Button fx:id="btnStartFix" layoutX="148.0" layoutY="250.0" mnemonicParsing="false" onAction="#btnStartCorrect" prefHeight="30.0" prefWidth="101.0" text="Исправить" AnchorPane.leftAnchor="148.0" AnchorPane.topAnchor="250.0">
+      <Button fx:id="btnStartFix" layoutX="148.0" layoutY="250.0" mnemonicParsing="false" onAction="#btnStartCorrect" prefHeight="24.0" prefWidth="112.0" style="-fx-background-color: #19a2a7;" text="Исправить" AnchorPane.leftAnchor="148.0" AnchorPane.topAnchor="250.0">
          <font>
-            <Font size="14.0" />
+            <Font name="Bookman Old Style" size="12.0" />
          </font>
       </Button>
-      <ChoiceBox fx:id="choiceOriginalPattern" layoutX="10.0" layoutY="213.0" prefHeight="25.0" prefWidth="235.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="213.0" />
+      <ChoiceBox fx:id="choiceOriginalPattern" layoutX="10.0" layoutY="213.0" prefHeight="25.0" prefWidth="246.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="213.0" />
       <Label layoutX="24.0" layoutY="170.0" text="Шаблоны для исправления" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="160.0">
          <font>
-            <Font size="18.0" />
+            <Font name="Bookman Old Style" size="18.0" />
          </font>
       </Label>
       <TableView fx:id="tableView" layoutY="293.0" prefHeight="457.0" prefWidth="775.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="290.0">
@@ -63,36 +69,36 @@
             <TableColumn fx:id="tableNewDate" prefWidth="184.0" text="Новая дата" />
          </columns>
       </TableView>
-      <TextField fx:id="textUserPattern" layoutX="267.0" layoutY="217.0" prefHeight="30.0" prefWidth="235.0" promptText="Введите шаблон для исправления" AnchorPane.leftAnchor="267.0" AnchorPane.topAnchor="210.0">
+      <TextField fx:id="textUserPattern" layoutX="304.0" layoutY="211.0" prefHeight="30.0" prefWidth="235.0" promptText="Введите шаблон для исправления" AnchorPane.leftAnchor="304.0" AnchorPane.topAnchor="211.0">
          <font>
-            <Font size="14.0" />
+            <Font name="Bookman Old Style" size="12.0" />
          </font>
       </TextField>
-      <Label fx:id="labelMatchNotFound" layoutX="267.0" layoutY="255.0" prefHeight="20.0" prefWidth="226.0" text="Совпадений не найдено" textFill="#c30000" AnchorPane.leftAnchor="267.0" AnchorPane.topAnchor="255.0">
+      <Label fx:id="labelMatchNotFound" layoutX="309.0" layoutY="252.0" prefHeight="20.0" prefWidth="226.0" text="Совпадений не найдено" textFill="#c30000" AnchorPane.leftAnchor="309.0" AnchorPane.topAnchor="252.0">
          <font>
-            <Font size="14.0" />
+            <Font name="Bookman Old Style" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="labelMatchFound" layoutX="267.0" layoutY="255.0" prefHeight="20.0" prefWidth="226.0" text="Срвпадение найдено" textFill="#00c20b" AnchorPane.leftAnchor="267.0" AnchorPane.topAnchor="255.0">
+      <Label fx:id="labelMatchFound" layoutX="309.0" layoutY="252.0" prefHeight="20.0" prefWidth="226.0" text="Срвпадение найдено" textFill="#00c20b" AnchorPane.leftAnchor="309.0" AnchorPane.topAnchor="252.0">
          <font>
-            <Font size="14.0" />
+            <Font name="Bookman Old Style" size="18.0" />
          </font>
       </Label>
       <Label fx:id="labelInstruction" layoutX="14.0" layoutY="187.0" text="Наведите, чтобы получить справку о том, как установить шаблон формат даты" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="187.0">
          <font>
-            <Font size="14.0" />
+            <Font name="Bookman Old Style" size="18.0" />
          </font>
       </Label>
-      <HBox layoutX="14.0" layoutY="140.0" prefHeight="20.0" prefWidth="524.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="140.0">
+      <HBox layoutX="14.0" layoutY="140.0" prefHeight="21.0" prefWidth="587.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="140.0">
          <children>
             <CheckBox fx:id="checkPatternAuto" mnemonicParsing="false" text="автоматически">
                <font>
-                  <Font size="14.0" />
+                  <Font name="Bookman Old Style" size="14.0" />
                </font>
             </CheckBox>
-            <CheckBox fx:id="checkPattern" mnemonicParsing="false" prefHeight="20.0" prefWidth="107.0" text="по шаблону">
+            <CheckBox fx:id="checkPattern" mnemonicParsing="false" prefHeight="21.0" prefWidth="112.0" text="по шаблону">
                <font>
-                  <Font size="14.0" />
+                  <Font name="Bookman Old Style" size="14.0" />
                </font>
                <HBox.margin>
                   <Insets left="25.0" />
@@ -100,7 +106,7 @@
             </CheckBox>
             <CheckBox fx:id="checkManually" mnemonicParsing="false" text="вручную">
                <font>
-                  <Font size="14.0" />
+                  <Font name="Bookman Old Style" size="14.0" />
                </font>
                <HBox.margin>
                   <Insets left="25.0" />

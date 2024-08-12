@@ -9,23 +9,23 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.TextFlow?>
 
-
-<BorderPane fx:id="paneBorderContent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="750.0" minWidth="775.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.DiskAnalyzerChoiceController">
+<BorderPane fx:id="paneBorderContent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="710.0" minWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.DiskAnalyzerChoiceController">
    <top>
-      <VBox minHeight="100.0" minWidth="775.0" BorderPane.alignment="CENTER">
+      <VBox minHeight="100.0" minWidth="775.0" style="-fx-background-color: #7cc3b3;" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Анализатор дискового пространства">
+            <Label text="Анализатор дискового пространства" textFill="#bd6626">
                <font>
-                  <Font size="24.0" />
+                  <Font name="Bookman Old Style" size="24.0" />
                </font>
                <VBox.margin>
                   <Insets left="180.0" top="14.0" />
                </VBox.margin>
             </Label>
-            <Label text="Выберите удобный для вас метод просмотра анализа">
+            <Label text="Выберите удобный для вас метод просмотра анализа" textAlignment="JUSTIFY">
                <font>
-                  <Font size="18.0" />
+                  <Font name="Bookman Old Style" size="18.0" />
                </font>
                <VBox.margin>
                   <Insets left="14.0" />
@@ -33,26 +33,38 @@
             </Label>
             <HBox prefHeight="18.0" prefWidth="600.0">
                <children>
-                  <CheckBox fx:id="checkPieChart" mnemonicParsing="false" text="Диаграмный">
+                  <CheckBox fx:id="checkPieChart" mnemonicParsing="false" prefHeight="19.0" prefWidth="137.0" text="Диаграмный">
                      <HBox.margin>
                         <Insets right="4.0" />
                      </HBox.margin>
+                     <font>
+                        <Font name="Bookman Old Style" size="14.0" />
+                     </font>
                   </CheckBox>
-                  <CheckBox fx:id="checkTreeView" mnemonicParsing="false" text="ПРОВОДНИКОВЫЙ" />
+                  <CheckBox fx:id="checkTreeView" mnemonicParsing="false" text="Иерархический">
+                     <font>
+                        <Font name="Bookman Old Style" size="14.0" />
+                     </font></CheckBox>
                </children>
                <VBox.margin>
                   <Insets left="14.0" right="14.0" />
                </VBox.margin>
             </HBox>
-            <Button fx:id="btnChoice" mnemonicParsing="false" onAction="#btnChoice" text="Выбрать">
+            <Button fx:id="btnChoice" mnemonicParsing="false" onAction="#btnChoice" prefHeight="25.0" prefWidth="69.0" style="-fx-background-color: #19a2a7;" text="Выбрать">
                <VBox.margin>
                   <Insets left="14.0" top="4.0" />
                </VBox.margin>
+               <font>
+                  <Font name="Bookman Old Style" size="12.0" />
+               </font>
             </Button>
          </children>
       </VBox>
    </top>
    <center>
-      <AnchorPane fx:id="contentPane" BorderPane.alignment="CENTER" />
+      <AnchorPane fx:id="contentPane" style="-fx-background-color: #7cc3b3;" BorderPane.alignment="CENTER">
+         <children>
+            <TextFlow fx:id="textFlow" layoutX="14.0" layoutY="14.0" prefHeight="611.0" prefWidth="750.0" style="-fx-background-color: #7cc3b3;" textAlignment="JUSTIFY" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
+         </children></AnchorPane>
    </center>
 </BorderPane>

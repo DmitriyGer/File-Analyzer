@@ -101,7 +101,7 @@ public class AuthorizationController {
      */
     private void showSuccessAlert(String message) {
         Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Операция завершена");
+        alert.setTitle("Feeler Manager. Операция завершена");
         alert.setHeaderText(null); // Убираем заголовок
         alert.setContentText(message);
 
@@ -120,7 +120,6 @@ public class AuthorizationController {
     /**
      * 1. Реализовать код, который будет менять цвет кнопки "войти" при наведении на нее
      * ЕСТЬ 2. Добавить ShowAlertERROR в примечение "1" в initialize
-     * 3. Добавить кнопку или текст с ссылкой "Если у вас уже имеется аккаунт, вы можете войти в него"
      */
     @FXML
     void initialize() {
@@ -132,7 +131,7 @@ public class AuthorizationController {
             if (!loginText.equals("") && !loginPassword.equals("")) {
                 loginUser(loginText, loginPassword);
             } else {
-                showAlertERROR("Ошибка авторизации", "Введите логин и пароль!");
+                showAlertERROR("Feeler Manager. Ошибка авторизации", "Введите логин и пароль!");
             }
         });
         
@@ -152,9 +151,8 @@ public class AuthorizationController {
             Parent root = loader.getRoot();
             Stage stage = new Stage();
             stage.setResizable(false);
-            stage.setTitle("Регистрация");
+            stage.setTitle("Feeler Manager. Регистрация");
             stage.setScene(new Scene(root));
-            stage.setResizable(false);
             stage.showAndWait();
 
         });

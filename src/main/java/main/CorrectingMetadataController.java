@@ -99,7 +99,7 @@ public class CorrectingMetadataController {
 
         if (selectedDirectory != null) {
             if (isSystemDirectory(selectedDirectory)) {
-                showAlert("Ошибка", "Выбранная папка является системной. Пожалуйста, выберите другую папку.");
+                showAlert("Feeler Manager. Ошибка", "Выбранная папка является системной. Пожалуйста, выберите другую папку.");
             } else {
                 textWay.setText(selectedDirectory.getAbsolutePath());
                 textWay.end();

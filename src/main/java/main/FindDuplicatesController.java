@@ -16,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -83,6 +84,9 @@ public class FindDuplicatesController {
     @FXML
     private TextField textWay;
 
+    @FXML
+    private Label textNewWindow;
+
     /**
      * Проверка на системные директории
      * @param directory
@@ -119,7 +123,7 @@ public class FindDuplicatesController {
 
         if (selectedDirectory != null) {
             if (isSystemDirectory(selectedDirectory)) {
-                showAlertERROR("Ошибка", "Выбранная папка является системной. Пожалуйста, выберите другую папку.");
+                showAlertERROR("Feeler Manager. Ошибка", "Выбранная папка является системной. Пожалуйста, выберите другую папку.");
             } else {
                 textWay.setText(selectedDirectory.getAbsolutePath());
                 textWay.end();
@@ -143,24 +147,24 @@ public class FindDuplicatesController {
 
         String directoryPath = textWay.getText();
         if (directoryPath == null || directoryPath.isEmpty()) {
-            showAlertERROR("Ошибка", "Выберите папку для поиска дубликатов файла");
+            showAlertERROR("Feeler Manager. Ошибка", "Выберите папку для поиска дубликатов файла");
             return;
         }
 
         if (!nameSelected && !sizeSelected && !contentSelected) {
-            showAlertERROR("Ошибка", "Выберите параметры поиска");
+            showAlertERROR("Feeler Manager. Ошибка", "Выберите параметры поиска");
             return;
         }
 
         String dataType = choiceDataType.getValue();
         if (dataType == null) {
-            showAlertERROR("Ошибка", "Выберите тип данных");
+            showAlertERROR("Feeler Manager. Ошибка", "Выберите тип данных");
             return;
         }
 
         FileType fileType = getFileType(dataType);
         if (fileType == null) {
-            showAlertERROR("Ошибка", "Неправильный тип данных");
+            showAlertERROR("Feeler Manager. Ошибка", "Неправильный тип данных");
             return;
         }
 
@@ -207,19 +211,19 @@ public class FindDuplicatesController {
                 progressStage.close();
                 tableView.setItems(fileDataList);
                 if (fileDataList.isEmpty()) {
-                    showAlertINFO("Результат", "Дубликаты не найдены");
+                    showAlertINFO("Feeler Manager. Результат", "Дубликаты не найдены");
                 }
             });
 
             task.setOnCancelled(workerStateEvent -> {
                 progressStage.close();
-                showAlertINFO("Отмена", "Процесс поиска дубликатов был отменён");
+                showAlertINFO("Feeler Manager. Отмена", "Процесс поиска дубликатов был отменён");
             });
 
             new Thread(task).start();
         } catch (IOException e) {
             e.printStackTrace();
-            showAlertERROR("Ошибка", "Произошла ошибка при загрузке окна прогресс-бара.");
+            showAlertERROR("Feeler Manager. Ошибка", "Произошла ошибка при загрузке окна прогресс-бара.");
         }
     }
 
@@ -265,15 +269,29 @@ public class FindDuplicatesController {
             FindDuplicatesController newWindowController = loader.getController();
 
             newWindowController.copyDataFrom(this);
+            newWindowController.hideNewWindowButton();
 
             Stage newStage = new Stage();
-            newStage.setTitle("Новое окно");
+            newStage.setTitle("Feeler Manager. Поиск дубликатов файлов");
             newStage.setScene(new Scene(root));
             newStage.setMaximized(true);
+            
             newStage.show();
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Метод для скрытия кнопки
+     */
+    private void hideNewWindowButton() {
+        if (btnNewWindow != null) {
+            btnNewWindow.setVisible(false);
+        }
+        if (textNewWindow != null) {
+            textNewWindow.setVisible(false);
         }
     }
 
@@ -361,10 +379,10 @@ public class FindDuplicatesController {
                 }
                 Runtime.getRuntime().exec(command);
             } else {
-                showAlertERROR("Ошибка", "Файл не найден: " + filePath);
+                showAlertERROR("Feeler Manager. Ошибка", "Файл не найден: " + filePath);
             }
         } catch (IOException e) {
-            showAlertERROR("Ошибка", "Не удалось открыть проводник для файла: " + filePath);
+            showAlertERROR("Feeler Manager. Ошибка", "Не удалось открыть проводник для файла: " + filePath);
             e.printStackTrace();
         }
     }
@@ -384,7 +402,7 @@ public class FindDuplicatesController {
      * ЕСТЬ 8. Добавить прогресс бар. 
      *      8.1. Реализовать прогресс бар, показывающий проценты загрузки))
      * ЕСТЬ 9. Поработать над отображением размера файла
-     * 10. В новом окне убрать кнопку "Открыть в новом окне" и убрать текст рядом с ней.
+     * ЕСТЬ 10. В новом окне убрать кнопку "Открыть в новом окне" и убрать текст рядом с ней.
      *     В анализаторе сделать тоже самое
      */
     @FXML

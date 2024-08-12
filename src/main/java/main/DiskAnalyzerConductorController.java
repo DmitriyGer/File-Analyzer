@@ -5,10 +5,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.AnchorPane;
@@ -60,10 +60,10 @@ public class DiskAnalyzerConductorController {
     private AnchorPane paneViewAnalyzer;
 
     @FXML
-    private PieChart pieChart;
+    private TextField textWay;
 
     @FXML
-    private TextField textWay;
+    private Label textNewWindow;
 
     private long rootTotalSpace;
     private File selectedDirectory;
@@ -111,13 +111,14 @@ public class DiskAnalyzerConductorController {
             DiskAnalyzerConductorController controller = fxmlLoader.getController();
             Stage newStage = new Stage();
             controller.setPrimaryStage(newStage);
+            controller.hideNewWindowButton();
 
             // Передача данных, если уже выполнен анализ
             if (selectedDirectory != null) {
                 controller.setData(selectedDirectory, sizes, previousPaths);
             }
 
-            newStage.setTitle("Disk Analyzer");
+            newStage.setTitle("Feeler Manager. Анализатор дискового пространства");
             newStage.setScene(new Scene(root));
 
             // Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
@@ -132,6 +133,18 @@ public class DiskAnalyzerConductorController {
             newStage.show();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Метод для скрытия кнопки
+     */
+    private void hideNewWindowButton() {
+        if (btnNewWindow != null) {
+            btnNewWindow.setVisible(false);
+        }
+        if (textNewWindow != null) {
+            textNewWindow.setVisible(false);
         }
     }
 
@@ -155,7 +168,7 @@ public class DiskAnalyzerConductorController {
     public void btnStartAnalys(ActionEvent event) {
 
         if (selectedDirectory == null) {
-            showAlertERROR("Ошибка", "Выберите диск или папку");
+            showAlertERROR("Feeler Manager. Ошибка", "Выберите диск или папку");
         }
 
         try {
@@ -220,7 +233,9 @@ public class DiskAnalyzerConductorController {
     }
 
     /**
-     * Доработать функцию остановки работы алгоритма в прогресс баре
+     * 1. Доработать функцию остановки работы алгоритма в прогресс баре
+     * 2. Оптимизировать. Ест много ОЗУ и работает медленее, чем диаграма, а также вывод объемных
+     *    директорий повторятеся
      */
     @FXML
     public void initialize() {

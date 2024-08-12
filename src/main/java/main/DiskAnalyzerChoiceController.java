@@ -13,6 +13,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 public class DiskAnalyzerChoiceController {
 
@@ -32,6 +35,9 @@ public class DiskAnalyzerChoiceController {
     private CheckBox checkTreeView;
 
     @FXML
+    private TextFlow textFlow;
+
+    @FXML
     private AnchorPane contentPane;
 
     @FXML
@@ -45,7 +51,7 @@ public class DiskAnalyzerChoiceController {
 
         // Проверка выбора параметров анализатора
         if (!checkPie && !checkTree) {
-            showAlert("Ошибка", "Выберите параметры поиска");
+            showAlert("Feeler Manager. Ошибка", "Выберите параметры поиска");
             return;
         }
 
@@ -84,6 +90,40 @@ public class DiskAnalyzerChoiceController {
         alert.showAndWait();
     }
 
+    /**
+     * Функция для создания форматированного текстового объекта
+     * @param content
+     * @return
+     */
+    private static Text createFormattedText(String content) {
+        Text text = new Text(content);
+        text.setFont(Font.font("Bookman Old Style", 16));
+        return text;
+    }
+
+    /**
+     * Функция для добавления текстов в TextFlow
+     * @param textFlow
+     */
+    private static void initializeTextFlow(TextFlow textFlow) {
+        String[] texts = {
+                "Диаграмный - это мощное и удобное приложение для анализа использования",
+                "дискового пространства, которое предоставляет визуализацию данных в ",
+                "понятном и наглядном формате с использованием круговой диаграммы. ",
+                "Этот инструмент обеспечивает глубокий анализ и детализацию всех данных, ",
+                "хранящихся на вашем диске, помогая вам эффективно управлять и ",
+                "оптимизировать дисковое пространство.\n\n\n",
+                "Функция анализатора дискового пространства, пользователям видеть иерархию ",
+                "файлов и папок, облегчая навигацию и понимание организации данных на жестком диске, ",
+                "Эта функция является мощным инструментом для управления дисковым пространством, ",
+                "обеспечивая наглядное представление и облегчая оптимизацию использования ресурсов хранения."
+        };
+
+        for (String str : texts) {
+            textFlow.getChildren().add(createFormattedText(str));
+        }
+    }
+
     @FXML
     void initialize() {
 
@@ -99,6 +139,8 @@ public class DiskAnalyzerChoiceController {
                 checkPieChart.setSelected(false);
             }
         });
+
+        initializeTextFlow(textFlow);
 
     }
 }

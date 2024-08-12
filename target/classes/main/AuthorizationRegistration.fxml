@@ -9,13 +9,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #33343c;" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.AuthorizationRegistrationController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #7cc3b3;" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.AuthorizationRegistrationController">
    <children>
       <AnchorPane layoutY="141.0" prefHeight="461.0" prefWidth="800.0" style="-fx-background-color: #fafafa;">
          <children>
-            <Button fx:id="btnSignUp" layoutX="293.0" layoutY="349.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="217.0" style="-fx-background-color: #33343c;" text="Зарегистрироваться" textFill="WHITE">
+            <Button fx:id="btnSignUp" layoutX="293.0" layoutY="349.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="217.0" style="-fx-background-color: #19a2a7;" text="Зарегистрироваться" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>
@@ -106,14 +109,14 @@
                         <Insets />
                      </VBox.margin>
                   </HBox>
-                  <HBox fx:id="boxAuthorization" prefHeight="100.0" prefWidth="200.0" visible="false">
+                  <HBox fx:id="boxAuthorization" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" visible="false">
                      <children>
                         <Label prefHeight="40.0" prefWidth="227.0" text="У вас уже имеется аккаунт.">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Button fx:id="btnAuthorization" mnemonicParsing="false" onAction="#btnAuthorization" prefHeight="39.0" prefWidth="231.0" style="-fx-background-color: #fafafa;" text="Выполнить авторизацию" textFill="#39bf17">
+                        <Button fx:id="btnAuthorization" mnemonicParsing="false" onAction="#btnAuthorizationPressed" prefHeight="21.0" prefWidth="231.0" style="-fx-background-color: #fafafa; -fx-text-fill: #2f9e10; -fx-font-size: 18;" text="Выполнить авторизацию" textFill="#2f9e10">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -122,17 +125,33 @@
                   </HBox>
                </children>
             </VBox>
-            <Label layoutX="298.0" layoutY="50.0" text="Регистрация" textFill="#404040">
+            <Label layoutX="285.0" layoutY="50.0" text="Регистрация" textFill="#19a2a7">
                <font>
-                  <Font size="36.0" />
+                  <Font name="Bookman Old Style" size="36.0" />
                </font>
             </Label>
          </children>
       </AnchorPane>
-      <Label layoutX="107.0" layoutY="35.0" text="НАЗВАНИЕ ПРИЛОЖЕНИЯ" textFill="WHITE">
+      <Label layoutX="235.0" layoutY="35.0" text="Feeler Manager">
          <font>
             <Font size="48.0" />
          </font>
+         <textFill>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.239215686917305" green="0.501960813999176" blue="0.34117648005485535" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="1.0" green="0.48235294222831726" blue="0.13333334028720856" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </textFill>
       </Label>
    </children>
 </AnchorPane>

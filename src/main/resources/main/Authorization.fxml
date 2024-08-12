@@ -5,9 +5,12 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #33343c;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.AuthorizationController" stylesheets="@styles.css">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #7cc3b3;" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.AuthorizationController">
    <children>
       <AnchorPane layoutY="141.0" prefHeight="461.0" prefWidth="800.0" style="-fx-background-color: #fafafa;">
          <children>
@@ -21,12 +24,12 @@
                   <Font size="17.0" />
                </font>
             </PasswordField>
-            <Label layoutX="289.0" layoutY="60.0" text="Авторизация" textFill="#393939">
+            <Label layoutX="278.0" layoutY="60.0" text="Авторизация" textFill="#19a2a7">
                <font>
-                  <Font size="37.0" />
+                  <Font name="Bookman Old Style" size="37.0" />
                </font>
             </Label>
-            <Button fx:id="btnAuthSigIn" layoutX="339.0" layoutY="301.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="122.0" style="-fx-background-color: #33343c;" text="Войти" textFill="WHITE">
+            <Button fx:id="btnAuthSigIn" layoutX="339.0" layoutY="301.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="122.0" style="-fx-background-color: #19a2a7;" text="Войти" textFill="WHITE">
                <font>
                   <Font size="24.0" />
                </font>
@@ -38,12 +41,28 @@
             </Label>
          </children>
       </AnchorPane>
-      <Label layoutX="107.0" layoutY="35.0" text="НАЗВАНИЕ ПРИЛОЖЕНИЯ" textFill="WHITE">
+      <Label layoutX="235.0" layoutY="35.0" text="Feeler Manager">
          <font>
             <Font size="48.0" />
          </font>
+         <textFill>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.239215686917305" green="0.501960813999176" blue="0.34117648005485535" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="1.0" green="0.48235294222831726" blue="0.13333334028720856" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </textFill>
       </Label>
-      <Button fx:id="btnLoginSignUp" layoutX="639.0" layoutY="14.0" mnemonicParsing="false" style="-fx-background-color: #F39C63;" text="Зарегестрироваться" textFill="WHITE">
+      <Button fx:id="btnLoginSignUp" layoutX="639.0" layoutY="14.0" mnemonicParsing="false" style="-fx-background-color: #19a2a7;" text="Зарегестрироваться" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>

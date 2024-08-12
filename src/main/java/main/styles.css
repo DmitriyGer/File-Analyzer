@@ -48,7 +48,8 @@
 
 /* Если не разберусьс их работой, то удалить */
 
-@font-face {
+
+/* @font-face {
     font-family: 'Italic';
     src: url('../../resources/fonts/italic.ttf');
 }
@@ -58,6 +59,6 @@
     src: url('../../resources/fonts/roseMByGeevara.ttf');
 }
 
-roseMByGeevara.ttf .custom-font {
+.custom-font {
     -fx-font-family: 'roseMByGeevara';
-}
+} */

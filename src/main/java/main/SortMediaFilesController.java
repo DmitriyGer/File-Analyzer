@@ -66,7 +66,7 @@ public class SortMediaFilesController {
         File selectedDirectory = directoryChooser.showDialog(stage);
         if (selectedDirectory != null) {
             if (isSystemDirectory(selectedDirectory)) {
-                showErrorAlert("Ошибка", "Выбранная папка является системной. Пожалуйста, выберите другую папку.");
+                showErrorAlert("Feeler Manager. Ошибка", "Выбранная папка является системной. Пожалуйста, выберите другую папку.");
             } else {
                 textWay.setText(selectedDirectory.getAbsolutePath());
                 textWay.end();
@@ -81,13 +81,13 @@ public class SortMediaFilesController {
         boolean daySelected = checkByDay.isSelected();
 
         if (!yearSelected && !monthSelected && !daySelected) {
-            showErrorAlert("Ошибка", "Выберите параметры сортировки");
+            showErrorAlert("Feeler Manager. Ошибка", "Выберите параметры сортировки");
             return;
         }
 
         String directoryPath = textWay.getText();
         if (directoryPath == null || directoryPath.isEmpty()) {
-            showErrorAlert("Ошибка", "Выберите исходную папку для сортировки файлов");
+            showErrorAlert("Feeler Manager. Ошибка", "Выберите исходную папку для сортировки файлов");
             return;
         }
 
@@ -101,13 +101,13 @@ public class SortMediaFilesController {
                 break;
             case "Переместить отсортированные файлы в":
                 if (selectedNewDirectory == null) {
-                    showErrorAlert("Ошибка", "Пожалуйста, выберите папку для перемещения файлов");
+                    showErrorAlert("Feeler Manager. Ошибка", "Пожалуйста, выберите папку для перемещения файлов");
                     return;
                 }
                 break;
             case "Копировать отсортированные файлы в":
                 if (selectedNewDirectory == null) {
-                    showErrorAlert("Ошибка", "Пожалуйста, выберите папку для копирования файлов");
+                    showErrorAlert("Feeler Manager. Ошибка", "Пожалуйста, выберите папку для копирования файлов");
                     return;
                 }
                 break;
@@ -154,7 +154,7 @@ public class SortMediaFilesController {
      */
     private void showSuccessAlert(String message) {
         Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Операция завершена");
+        alert.setTitle("Feeler Manager. Операция завершена");
         alert.setHeaderText(null); // Убираем заголовок
         alert.setContentText(message);
 
@@ -186,11 +186,11 @@ public class SortMediaFilesController {
         choiceOutputData.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.equals("Переместить отсортированные файлы в") || newValue.equals("Копировать отсортированные файлы в")) {
                 DirectoryChooser directoryChooser = new DirectoryChooser();
-                directoryChooser.setTitle("Выберите директорию");
+                directoryChooser.setTitle("Feeler Manager. Выберите директорию");
                 selectedNewDirectory = directoryChooser.showDialog(primaryStage);
                 if (selectedNewDirectory != null) {
                     if (isSystemDirectory(selectedNewDirectory)) {
-                        showErrorAlert("Ошибка", "Выбранная папка является системной. Пожалуйста, выберите другую папку.");
+                        showErrorAlert("Feeler Manager. Ошибка", "Выбранная папка является системной. Пожалуйста, выберите другую папку.");
                     } else {
                         textWayNewDirectory.setText(selectedNewDirectory.getAbsolutePath());
                         textWayNewDirectory.setVisible(true);
