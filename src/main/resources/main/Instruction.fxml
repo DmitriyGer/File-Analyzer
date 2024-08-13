@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="800.0" style="-fx-background-color: #7cc3b3;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.InstructionController">
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ImageView fx:id="imageInsFindDublicatFiles" fitHeight="129.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/Find%20Duplicat%20Files%20Done.png" />
+                     </image>
+                  </ImageView>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Функция &quot;Поиск дубликатов файлов&quot; предназначена для сканирования выбранного пользователем каталога и выявления файлов, которые имеют одинаковое название/размер/содержимое. Эта функция полезна для освобождения дискового пространства и оптимизации хранения данных" textAlignment="JUSTIFY" wrappingWidth="640.0">
+                     <font>
+                        <Font name="Bookman Old Style" size="16.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ImageView fx:id="imageInsSortFiles" fitHeight="129.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/Sort%20Files%20Done.png" />
+                     </image>
+                  </ImageView>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Функция &quot;Сортировка медиафайлов&quot; предназначена для упорядочивания файлов в указанной директории по различным критериям, таким как имя файла, дата создания, дата последнего изменения, размер или тип файла. Эта функция помогает пользователям быстро и легко находить нужные файлы, поддерживать упорядоченную файловую структуру и улучшать общую эффективность работы с данными." textAlignment="JUSTIFY" wrappingWidth="640.0">
+                     <font>
+                        <Font name="Bookman Old Style" size="16.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ImageView fx:id="imageInsAnalyzerDisk" fitHeight="129.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/Disk%20Analyzer%20Done.png" />
+                     </image>
+                  </ImageView>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Функция &quot;Анализатор дискового пространства&quot; помогает вам понять, как используется ваше дисковое пространство и управлять им более эффективно." textAlignment="JUSTIFY" wrappingWidth="640.0">
+                     <font>
+                        <Font name="Bookman Old Style" size="16.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox prefHeight="56.0" prefWidth="800.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Для получения дополнительной информации и подробного описания функции, нажмите на значек необходимой функции" textAlignment="JUSTIFY" wrappingWidth="455.0">
+                     <font>
+                        <Font name="Bookman Old Style" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

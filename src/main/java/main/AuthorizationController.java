@@ -117,10 +117,7 @@ public class AuthorizationController {
         alert.showAndWait();
     }
 
-    /**
-     * 1. Реализовать код, который будет менять цвет кнопки "войти" при наведении на нее
-     * ЕСТЬ 2. Добавить ShowAlertERROR в примечение "1" в initialize
-     */
+
     @FXML
     void initialize() {
 

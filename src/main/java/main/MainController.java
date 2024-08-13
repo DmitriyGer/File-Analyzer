@@ -51,6 +51,10 @@ public class MainController {
     @FXML
     private AnchorPane contentPane;
 
+    public void setContent(Parent content) {
+        contentPane.getChildren().setAll(content);
+    }
+
     @FXML
     private ImageView viewPhoto;
 
@@ -106,7 +110,18 @@ public class MainController {
 
     @FXML
     void btnShowInstruction(ActionEvent event) {
-
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Instruction.fxml"));
+            Parent root = loader.load();
+            
+            // Получаем контроллер и устанавливаем mainController
+            InstructionController instructionController = loader.getController();
+            instructionController.setMainController(this);
+            
+            setContent(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -114,13 +129,20 @@ public class MainController {
 
     }
 
-    // ToolTip
+    /**
+     * toolTip
+     * @param button
+     * @param tooltipText
+     */
     private void addTooltip(Button button, String tooltipText) {
         Tooltip tooltip = new Tooltip(tooltipText);
         button.setTooltip(tooltip);
     }
 
-    // Загрузчик нужной страницы
+    /**
+     * Загрузка необходимой страницы
+     * @param fxmlFile
+     */
     private void loadPage(String fxmlFile) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource(fxmlFile));

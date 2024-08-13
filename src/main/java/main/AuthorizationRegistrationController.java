@@ -206,7 +206,7 @@ public class AuthorizationRegistrationController {
     private void showSuccessAlert(String message) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Feeler Manager. Операция завершена");
-        alert.setHeaderText(null); // Убираем заголовок
+        alert.setHeaderText(null);
         alert.setContentText(message);
 
         // Загрузка изображения зеленой галочки

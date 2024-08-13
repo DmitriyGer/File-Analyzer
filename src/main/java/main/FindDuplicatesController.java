@@ -6,7 +6,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -323,7 +322,7 @@ public class FindDuplicatesController {
                 return new MediaFileType();
             case "Документы":
                 return new DocumentFileType();
-            case "Все поддерживаемые файлы":
+            case "Все поддерживаемые форматы":
                 return new AnyFileType();
             default:
                 return null;
@@ -409,7 +408,7 @@ public class FindDuplicatesController {
     void initialize() {
 
         // Заполняем ChoiceBox и задаем значение по умолчанию
-        choiceDataType.getItems().addAll("Медиа файлы", "Документы", "Все поддерживаемые файлы");
+        choiceDataType.getItems().addAll("Медиа файлы", "Документы", "Все поддерживаемые форматы");
         choiceDataType.setValue("Медиа файлы");
 
         // Добавляем слушатели изменений состояния CheckBox
