@@ -58,6 +58,10 @@ public class MainController {
     @FXML
     private ImageView viewPhoto;
 
+    /**
+     * Кнопка авторизации
+     * @param event
+     */
     @FXML
     void btnAuthorization(ActionEvent event) {
         try {
@@ -80,34 +84,58 @@ public class MainController {
         }
     }
 
+    /**
+     * Кнопка поиска дубликатов файлов
+     * @param event
+     */
     @FXML
     void btnShowFindDuplicates(ActionEvent event) {
         loadPage("FindDuplicates.fxml");
     }
 
+    /**
+     * Кнопка сортироваки медиафайлов
+     * @param event
+     */
     @FXML
     void btnShowSortMediaFiles(ActionEvent event) {
         loadPage("SortMediaFiles.fxml");
         
     }
 
+    /**
+     * Кнопка исправления метаданных
+     * @param event
+     */
     @FXML
     void btnShowFixMetadata(ActionEvent event) {
         loadPage("CorrectingMetadata.fxml");
 
     }
 
+    /**
+     * Кнопка анализатора дискового пространства
+     * @param event
+     */
     @FXML
     void btnShowDiskAnalyzer(ActionEvent event) {
         loadPage("DiskAnalyzerChoice.fxml");
 
     }
 
+    /**
+     * Кнопка подключения к Андроид
+     * @param event
+     */
     @FXML
     void btnShowConnectAndroid(ActionEvent event) {
         
     }
 
+    /**
+     * Кнопка инструкции
+     * @param event
+     */
     @FXML
     void btnShowInstruction(ActionEvent event) {
         try {
@@ -124,9 +152,13 @@ public class MainController {
         }
     }
 
+    /**
+     * Кнопка обратной связи
+     * @param event
+     */
     @FXML
     void btnShowToDeveloper(ActionEvent event) {
-
+        loadPage("Feedback.fxml");
     }
 
     /**
@@ -168,7 +200,6 @@ public class MainController {
         addTooltip(btnInstruction, "Инструкция");
         addTooltip(btnToDeveloper, "О разработчике");
         
-   
     }
 
 }

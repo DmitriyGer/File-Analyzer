@@ -40,13 +40,6 @@ public class DiskAnalysisTask extends Task<Void> {
 
             TreeItem<StackPane> rootItem = AnalyzerConductor.createTreeItem(directory, rootTotalSpace, directoryTreeView);
 
-            for (File file : files) {
-                if (isCancelled()) {
-                    break;
-                }
-                futures.add(executorService.submit(() -> new FileTreeItem(file, rootTotalSpace, directoryTreeView)));
-            }
-
             for (Future<FileTreeItem> future : futures) {
                 if (isCancelled()) {
                     break;
@@ -67,12 +60,6 @@ public class DiskAnalysisTask extends Task<Void> {
                 }
             }
 
-            if (!buffer.isEmpty()) {
-                final List<TreeItem<StackPane>> itemsToAdd = new ArrayList<>(buffer);
-                buffer.clear();
-                Platform.runLater(() -> rootItem.getChildren().addAll(itemsToAdd));
-            }
-
             Platform.runLater(() -> directoryTreeView.setRoot(rootItem));
         }
 
@@ -81,12 +68,6 @@ public class DiskAnalysisTask extends Task<Void> {
     }
 
     private static class FileTreeItem {
-        final File file;
-        final TreeItem<StackPane> treeItem;
-
-        FileTreeItem(File file, long rootTotalSpace, TreeView<StackPane> directoryTreeView) {
-            this.file = file;
-            this.treeItem = AnalyzerConductor.createTreeItem(file, rootTotalSpace, directoryTreeView);
-        }
+        final TreeItem<StackPane> treeItem = new TreeItem<StackPane>();
     }
 }

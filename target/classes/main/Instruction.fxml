@@ -9,7 +9,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="800.0" style="-fx-background-color: #7cc3b3;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.InstructionController">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
@@ -21,7 +20,7 @@
                         <Image url="@../images/Find%20Duplicat%20Files%20Done.png" />
                      </image>
                   </ImageView>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Функция &quot;Поиск дубликатов файлов&quot; предназначена для сканирования выбранного пользователем каталога и выявления файлов, которые имеют одинаковое название/размер/содержимое. Эта функция полезна для освобождения дискового пространства и оптимизации хранения данных" textAlignment="JUSTIFY" wrappingWidth="640.0">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Функция &quot;Поиск дубликатов файлов&quot; предназначена для сканирования выбранного пользователем каталога и выявления файлов, которые имеют одинаковое название/размер/содержимое. Эта функция полезна для освобождения дискового пространства и оптимизации хранения данных." textAlignment="JUSTIFY" wrappingWidth="640.0">
                      <font>
                         <Font name="Bookman Old Style" size="16.0" />
                      </font>

@@ -6,6 +6,7 @@ module main {
     requires java.sql;
 
     requires java.desktop;
+    requires jakarta.mail;
 
     opens main to javafx.fxml;
     exports main;

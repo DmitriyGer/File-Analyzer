@@ -1,5 +1,6 @@
 package main;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -166,47 +167,47 @@ public class DiskAnalyzerConductorController {
      * @param event
      */
     public void btnStartAnalys(ActionEvent event) {
+    if (selectedDirectory == null) {
+        showAlertERROR("Feeler Manager. Ошибка", "Выберите диск или папку");
+        return;
+    }
 
-        if (selectedDirectory == null) {
-            showAlertERROR("Feeler Manager. Ошибка", "Выберите диск или папку");
-        }
+    try {
+        if (selectedDirectory != null) {
+            rootTotalSpace = AnalyzerConductor.getDirectorySize(selectedDirectory);
 
-        try {
-            if (selectedDirectory != null) {
-                rootTotalSpace = AnalyzerConductor.getDirectorySize(selectedDirectory);
-    
-                // Открытие окна прогресса
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("ProgressDialogAnalyzer.fxml"));
-                Parent root = loader.load();
-                ProgressBarController progressBarController = loader.getController();
-                Stage progressStage = new Stage();
-                progressStage.initModality(Modality.APPLICATION_MODAL);
-                progressStage.setScene(new Scene(root));
-                progressBarController.setStage(progressStage);
-                progressStage.show();
-    
-                // Запуск задачи анализа
-                DiskAnalysisTask task = new DiskAnalysisTask(selectedDirectory, rootTotalSpace, directoryTreeView);
-                progressBarController.getProgressBar().progressProperty().bind(task.progressProperty());
-                progressBarController.getLabelProgress().textProperty().bind(task.messageProperty());
-    
-                task.setOnSucceeded(e -> progressStage.close());
-                task.setOnCancelled(e -> progressStage.close());
-    
-                // Установка действия для кнопки "Отмена"
-                progressBarController.getBtnCancel().setOnAction(e -> {
-                    task.cancel();
-                    progressBarController.cancelAnalysis();
-                    progressStage.close(); // Закрытие окна прогресса
-                });
-    
-                // Запуск задачи в отдельном потоке
-                new Thread(task).start();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Произошла ошибка при обработке файлов: " + e.getMessage());
+            // Открытие окна прогресса
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ProgressDialogAnalyzer.fxml"));
+            Parent root = loader.load();
+            ProgressBarController progressBarController = loader.getController();
+            Stage progressStage = new Stage();
+            progressStage.initModality(Modality.APPLICATION_MODAL);
+            progressStage.setScene(new Scene(root));
+            progressBarController.setStage(progressStage);
+            progressStage.show();
+
+            // Запуск задачи анализа
+            DiskAnalysisTask task = new DiskAnalysisTask(selectedDirectory, rootTotalSpace, directoryTreeView);
+            progressBarController.getProgressBar().progressProperty().bind(task.progressProperty());
+            progressBarController.getLabelProgress().textProperty().bind(task.messageProperty());
+
+            task.setOnSucceeded(e -> progressStage.close());
+            task.setOnCancelled(e -> progressStage.close());
+
+            // Установка действия для кнопки "Отмена"
+            progressBarController.getBtnCancel().setOnAction(e -> {
+                task.cancel();
+                progressBarController.cancelAnalysis();
+                Platform.runLater(() -> progressStage.close()); // Закрытие окна прогресса в JavaFX thread
+            });
+
+            // Запуск задачи в отдельном потоке
+            new Thread(task).start();
         }
+    } catch (Exception e) {
+        e.printStackTrace();
+        System.out.println("Произошла ошибка при обработке файлов: " + e.getMessage());
+    }
     }
    
     /**
@@ -234,8 +235,12 @@ public class DiskAnalyzerConductorController {
 
     /**
      * 1. Доработать функцию остановки работы алгоритма в прогресс баре
-     * 2. Оптимизировать. Ест много ОЗУ и работает медленее, чем диаграма, а также вывод объемных
-     *    директорий повторятеся
+     * 
+     * Частично 2. Оптимизировать. Ест много ОЗУ и работает медленее, чем диаграма, а также вывод объемных
+     *    директорий повторятеся. 
+     *    2.1. Реализовать код, который будет подгружать сначала родительские директории, а затем дочерние, 
+     *         при открытии родительских
+     * 
      */
     @FXML
     public void initialize() {

@@ -55,42 +55,6 @@
                               <Insets right="50.0" />
                            </HBox.margin>
                         </TextField>
-                        <VBox minWidth="100.0" prefHeight="30.0" prefWidth="300.0">
-                           <children>
-                              <Label prefHeight="21.0" prefWidth="301.0" text="Выберите пол:">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Label>
-                              <HBox prefHeight="16.0" prefWidth="300.0">
-                                 <children>
-                                    <CheckBox fx:id="signUpCheckMan" mnemonicParsing="false" text="Мужской">
-                                       <HBox.margin>
-                                          <Insets right="50.0" />
-                                       </HBox.margin>
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </CheckBox>
-                                    <CheckBox fx:id="signUpCheckWoman" mnemonicParsing="false" text="Женский">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </CheckBox>
-                                 </children>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </HBox>
-                           </children>
-                        </VBox>
-                     </children>
-                     <VBox.margin>
-                        <Insets bottom="20.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <HBox prefHeight="28.0" prefWidth="472.0">
-                     <children>
                         <TextField fx:id="fieldLogin" minHeight="44.0" minWidth="300.0" promptText="Логин" style="-fx-background-color: #fafafa; -fx-border-color: silver; -fx-border-radius: 5;">
                            <font>
                               <Font size="18.0" />
@@ -99,10 +63,20 @@
                               <Insets right="50.0" />
                            </HBox.margin>
                         </TextField>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="44.0" prefWidth="465.0">
+                     <children>
                         <PasswordField fx:id="fieldPassword" minHeight="44.0" minWidth="300.0" promptText="Пароль" style="-fx-background-color: #fafafa; -fx-border-color: silver; -fx-border-radius: 5;">
                            <font>
                               <Font size="18.0" />
                            </font>
+                           <HBox.margin>
+                              <Insets left="175.0" />
+                           </HBox.margin>
                         </PasswordField>
                      </children>
                      <VBox.margin>
@@ -130,6 +104,35 @@
                   <Font name="Bookman Old Style" size="36.0" />
                </font>
             </Label>
+            <VBox layoutX="14.0" layoutY="402.0" minWidth="100.0" prefHeight="30.0" prefWidth="300.0" visible="false">
+               <children>
+                  <Label prefHeight="21.0" prefWidth="301.0" text="Выберите пол:">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <HBox prefHeight="16.0" prefWidth="300.0">
+                     <children>
+                        <CheckBox fx:id="signUpCheckMan" mnemonicParsing="false" text="Мужской">
+                           <HBox.margin>
+                              <Insets right="50.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </CheckBox>
+                        <CheckBox fx:id="signUpCheckWoman" mnemonicParsing="false" text="Женский">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </CheckBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
          </children>
       </AnchorPane>
       <Label layoutX="235.0" layoutY="35.0" text="Feeler Manager">

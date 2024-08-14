@@ -1,5 +1,6 @@
 package main;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -122,9 +123,9 @@ public class AuthorizationRegistrationController {
         if (signUpEmail.getText().isEmpty()) {
             errorMessage.append("Поле Email не заполнено.\n");
         }
-        if (!signUpCheckMan.isSelected() && !signUpCheckWoman.isSelected()) {
-            errorMessage.append("Не выбран пол.\n");
-        }
+        // if (!signUpCheckMan.isSelected() && !signUpCheckWoman.isSelected()) {
+        //     errorMessage.append("Не выбран пол.\n");
+        // }
 
         return errorMessage.toString();
     }
@@ -173,12 +174,12 @@ public class AuthorizationRegistrationController {
         String userName = fieldLogin.getText();
         String password = fieldPassword.getText();
         String email = signUpEmail.getText();
-        String gender = "";
-        if (signUpCheckMan.isSelected()) {
-            gender = "Муж";
-        } else {
-            gender = "Жен";
-        }
+        String gender = "муж"; // Заглушка
+        // if (signUpCheckMan.isSelected()) {
+        //     gender = "Муж";
+        // } else {
+        //     gender = "Жен";
+        // }
 
         User user = new User(firstName, lastName, userName, password, email, gender);
 
@@ -227,6 +228,26 @@ public class AuthorizationRegistrationController {
         alert.showAndWait();
     }
 
+    private void loadAuthorizationWindow() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Authorization.fxml"));
+            Parent root = fxmlLoader.load();
+            AuthorizationController controller = fxmlLoader.getController();
+            Stage newStage = new Stage();
+            controller.setStage(newStage);
+
+            newStage.setResizable(false);
+            newStage.setTitle("Feeler Manager. Авторизация");
+            newStage.setScene(new Scene(root));
+
+            newStage.initModality(Modality.APPLICATION_MODAL);
+            newStage.initStyle(StageStyle.DECORATED);
+            newStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * ЧАСТИЧНО 1. Добавить разлиыне проверки для полей
      *    - Почта. Проверить, чтобы почта указывалась корректно, создать шаблоны.
@@ -243,7 +264,7 @@ public class AuthorizationRegistrationController {
      * 
      * ЕСТЬ 3. Решено иначе. Добавить в окно зарегистрироваться checkBox рядом с логином (Такой же, как почта)
      * 
-     * В процессе 4. После успешной регистрации закрывать окно
+     * ЕСТЬ 4. После успешной регистрации закрывать окно
      */
     @FXML
     void initialize() {
@@ -279,6 +300,9 @@ public class AuthorizationRegistrationController {
                     } else {
                         signUpNewUser();
                         showSuccessAlert("Вы успешно зарегистрированы.");
+                        loadAuthorizationWindow();
+                        Stage currentStage = (Stage) btnSignUp.getScene().getWindow();
+                        currentStage.close();
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();

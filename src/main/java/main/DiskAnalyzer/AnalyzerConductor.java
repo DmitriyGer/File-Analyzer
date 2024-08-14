@@ -31,18 +31,28 @@ public class AnalyzerConductor {
         TreeItem<StackPane> treeItem = new TreeItem<>(treeItemContent);
 
         if (file.isDirectory()) {
-            File[] files = file.listFiles();
-            if (files != null) {
-                List<File> fileList = new ArrayList<>(Arrays.asList(files));
-                fileList.sort(Comparator.comparingLong(AnalyzerConductor::getDirectorySize).reversed());
+            addChildrenToTreeItem(file, treeItem, parentTotalSpace, treeView);
+        }
+        return treeItem;
+    }
 
-                for (File f : fileList) {
-                    treeItem.getChildren().add(createTreeItem(f, parentTotalSpace, treeView));
+    public static void addChildrenToTreeItem(File directory, TreeItem<StackPane> parentItem, long parentTotalSpace, TreeView<StackPane> treeView) {
+        File[] files = directory.listFiles();
+        if (files != null) {
+            Set<String> existingPaths = new HashSet<>();
+            parentItem.getChildren().forEach(child -> existingPaths.add(child.getValue().getId()));
+
+            List<File> fileList = new ArrayList<>(Arrays.asList(files));
+            fileList.sort(Comparator.comparingLong(AnalyzerConductor::getDirectorySize).reversed());
+
+            for (File file : fileList) {
+                if (!existingPaths.contains(file.getAbsolutePath())) {
+                    TreeItem<StackPane> newItem = createTreeItem(file, parentTotalSpace, treeView);
+                    parentItem.getChildren().add(newItem);
                 }
             }
         }
-        return treeItem;
-    }    
+    }
 
     public static StackPane createTreeItemContent(File file, long usedSpace, double spacePercentage, TreeView<StackPane> treeView) {
         DecimalFormat df = new DecimalFormat("#.##");
@@ -118,16 +128,7 @@ public class AnalyzerConductor {
     public static void updateTreeItems(File directory, TreeItem<StackPane> parentItem, long newTotalSpace, TreeView<StackPane> treeView) {
         parentItem.getChildren().clear();
         if (directory.isDirectory()) {
-            File[] files = directory.listFiles();
-            if (files != null) {
-                List<File> fileList = new ArrayList<>(Arrays.asList(files));
-                fileList.sort(Comparator.comparingLong(AnalyzerConductor::getDirectorySize).reversed());
-
-                for (File f : fileList) {
-                    TreeItem<StackPane> newItem = createTreeItem(f, newTotalSpace, treeView);
-                    parentItem.getChildren().add(newItem);
-                }
-            }
+            addChildrenToTreeItem(directory, parentItem, newTotalSpace, treeView);
         }
     }
 }

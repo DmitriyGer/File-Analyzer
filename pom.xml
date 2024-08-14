@@ -28,7 +28,25 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.31</version>
         </dependency>
-        
+
+        <!-- Подключение обратной связи через почту -->
+
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>jakarta.mail</artifactId>
+            <version>1.6.7</version>
+        </dependency>
+
+
+
+
+
+
+
+
+
+
+                
     </dependencies>
 
     

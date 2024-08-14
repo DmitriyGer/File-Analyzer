@@ -43,23 +43,7 @@
                   <Font name="Bookman Old Style" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnFixMetadata" mnemonicParsing="false" onAction="#btnShowFixMetadata" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: #19a2a7;" text="Исправление метаданных" textAlignment="CENTER" textFill="WHITE" wrapText="true">
-               <VBox.margin>
-                  <Insets left="10.0" right="10.0" top="20.0" />
-               </VBox.margin>
-               <font>
-                  <Font name="Bookman Old Style" size="14.0" />
-               </font>
-            </Button>
             <Button fx:id="btnDiskAnalyzer" mnemonicParsing="false" onAction="#btnShowDiskAnalyzer" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: #19a2a7;" text="Анализ диска" textAlignment="CENTER" textFill="WHITE" wrapText="true">
-               <VBox.margin>
-                  <Insets left="10.0" right="10.0" top="20.0" />
-               </VBox.margin>
-               <font>
-                  <Font name="Bookman Old Style" size="14.0" />
-               </font>
-            </Button>
-            <Button fx:id="btnConnectAndroid" mnemonicParsing="false" onAction="#btnShowConnectAndroid" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: #19a2a7;" text="Подключение к Android" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" top="20.0" />
                </VBox.margin>
@@ -75,7 +59,23 @@
                   <Font name="Bookman Old Style" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnToDeveloper" mnemonicParsing="false" onAction="#btnShowToDeveloper" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: #19a2a7;" text="О разработчике" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+            <Button fx:id="btnToDeveloper" mnemonicParsing="false" onAction="#btnShowToDeveloper" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: #19a2a7;" text="Обратная связь" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" top="20.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Bookman Old Style" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnFixMetadata" mnemonicParsing="false" onAction="#btnShowFixMetadata" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: #19a2a7;" text="Исправление метаданных" textAlignment="CENTER" textFill="WHITE" visible="false" wrapText="true">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" top="20.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Bookman Old Style" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnConnectAndroid" mnemonicParsing="false" onAction="#btnShowConnectAndroid" prefHeight="45.0" prefWidth="160.0" style="-fx-background-color: #19a2a7;" text="Подключение к Android" textAlignment="CENTER" textFill="WHITE" visible="false" wrapText="true">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" top="20.0" />
                </VBox.margin>
