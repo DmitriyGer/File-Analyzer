@@ -18,7 +18,6 @@ public class DiskAnalysisTask extends Task<Void> {
     private final long rootTotalSpace;
     private final TreeView<StackPane> directoryTreeView;
     private final ExecutorService executorService;
-    private static final int BUFFER_SIZE = 20;
 
     public DiskAnalysisTask(File directory, long rootTotalSpace, TreeView<StackPane> directoryTreeView) {
         this.directory = directory;
@@ -35,39 +34,36 @@ public class DiskAnalysisTask extends Task<Void> {
         if (files != null) {
             int totalFiles = files.length;
             int filesProcessed = 0;
-            List<Future<FileTreeItem>> futures = new ArrayList<>();
-            List<TreeItem<StackPane>> buffer = new ArrayList<>(BUFFER_SIZE);
 
+            List<Future<TreeItem<StackPane>>> futures = new ArrayList<>();
             TreeItem<StackPane> rootItem = AnalyzerConductor.createTreeItem(directory, rootTotalSpace, directoryTreeView);
 
-            for (Future<FileTreeItem> future : futures) {
+            /**
+             * При добавлении данного кода появляются проценты в прогресс баре и информация при выводе
+             * начинает дублироваться
+             */
+            // for (File file : files) {
+            //    futures.add(executorService.submit(() -> AnalyzerConductor.createTreeItem(file, rootTotalSpace, directoryTreeView)));
+            // }
+
+            for (Future<TreeItem<StackPane>> future : futures) {
                 if (isCancelled()) {
                     break;
                 }
 
                 filesProcessed++;
-                FileTreeItem fileTreeItem = future.get();
-                buffer.add(fileTreeItem.treeItem);
+                TreeItem<StackPane> fileTreeItem = future.get();
+
+                Platform.runLater(() -> rootItem.getChildren().add(fileTreeItem));
 
                 double progress = (double) filesProcessed / totalFiles;
                 updateProgress(progress, 1.0);
                 updateMessage((int) (progress * 100) + "%");
-
-                if (buffer.size() >= BUFFER_SIZE || filesProcessed == totalFiles) {
-                    final List<TreeItem<StackPane>> itemsToAdd = new ArrayList<>(buffer);
-                    buffer.clear();
-                    Platform.runLater(() -> rootItem.getChildren().addAll(itemsToAdd));
-                }
             }
 
             Platform.runLater(() -> directoryTreeView.setRoot(rootItem));
         }
 
-        executorService.shutdown();
         return null;
-    }
-
-    private static class FileTreeItem {
-        final TreeItem<StackPane> treeItem = new TreeItem<StackPane>();
     }
 }

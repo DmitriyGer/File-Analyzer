@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.text.DecimalFormat;
-import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Stack;
@@ -189,7 +188,9 @@ public class DiskAnalyzerCharController {
                 progressStage.setScene(new Scene(root));
                 progressStage.initModality(Modality.APPLICATION_MODAL);
                 progressStage.initStyle(StageStyle.UTILITY);
-                progressStage.setTitle("Загрузка...");
+                progressStage.setTitle("Feeler Manager. Загрузка...");
+
+                progressStage.setResizable(false);
 
                 progressController.getBtnCancel().setOnAction(e -> {
                     progressController.cancelAnalysis();

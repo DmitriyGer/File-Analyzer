@@ -10,7 +10,13 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.AccessDeniedException;
+import java.nio.file.FileSystemException;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
 import java.util.concurrent.*;
@@ -37,19 +43,54 @@ public class AnalyzerConductor {
     }
 
     public static void addChildrenToTreeItem(File directory, TreeItem<StackPane> parentItem, long parentTotalSpace, TreeView<StackPane> treeView) {
-        File[] files = directory.listFiles();
-        if (files != null) {
-            Set<String> existingPaths = new HashSet<>();
-            parentItem.getChildren().forEach(child -> existingPaths.add(child.getValue().getId()));
+        List<File> filesList = new ArrayList<>();
+        List<File> skippedFiles = new ArrayList<>();
 
-            List<File> fileList = new ArrayList<>(Arrays.asList(files));
-            fileList.sort(Comparator.comparingLong(AnalyzerConductor::getDirectorySize).reversed());
+        try {
+            Files.walkFileTree(directory.toPath(), new SimpleFileVisitor<>() {
+                @Override
+                public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                    File file = dir.toFile();
 
-            for (File file : fileList) {
-                if (!existingPaths.contains(file.getAbsolutePath())) {
-                    TreeItem<StackPane> newItem = createTreeItem(file, parentTotalSpace, treeView);
-                    parentItem.getChildren().add(newItem);
+                    if (!file.equals(directory)) {
+                        filesList.add(file);
+                        return FileVisitResult.SKIP_SUBTREE;
+                    }
+
+                    return FileVisitResult.CONTINUE;
                 }
+
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    filesList.add(file.toFile());
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+                    if (exc instanceof AccessDeniedException || exc instanceof FileSystemException) {
+                        skippedFiles.add(file.toFile());
+                        return FileVisitResult.CONTINUE;
+                    }
+
+                    return FileVisitResult.TERMINATE;
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        filesList.sort((f1, f2) -> Long.compare(getDirectorySize(f2), getDirectorySize(f1)));
+
+        for (File file : filesList) {
+            TreeItem<StackPane> newItem = createTreeItem(file, parentTotalSpace, treeView);
+            parentItem.getChildren().add(newItem);
+        }
+
+        if (!skippedFiles.isEmpty()) {
+            System.out.println("Пропущенные файлы из-за отсутствия доступа:");
+            for (File skippedFile : skippedFiles) {
+                System.out.println(skippedFile.getAbsolutePath());
             }
         }
     }

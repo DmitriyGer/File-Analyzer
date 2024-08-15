@@ -167,47 +167,46 @@ public class DiskAnalyzerConductorController {
      * @param event
      */
     public void btnStartAnalys(ActionEvent event) {
-    if (selectedDirectory == null) {
-        showAlertERROR("Feeler Manager. Ошибка", "Выберите диск или папку");
-        return;
-    }
-
-    try {
         if (selectedDirectory != null) {
-            rootTotalSpace = AnalyzerConductor.getDirectorySize(selectedDirectory);
-
-            // Открытие окна прогресса
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ProgressDialogAnalyzer.fxml"));
-            Parent root = loader.load();
-            ProgressBarController progressBarController = loader.getController();
-            Stage progressStage = new Stage();
-            progressStage.initModality(Modality.APPLICATION_MODAL);
-            progressStage.setScene(new Scene(root));
-            progressBarController.setStage(progressStage);
-            progressStage.show();
-
-            // Запуск задачи анализа
-            DiskAnalysisTask task = new DiskAnalysisTask(selectedDirectory, rootTotalSpace, directoryTreeView);
-            progressBarController.getProgressBar().progressProperty().bind(task.progressProperty());
-            progressBarController.getLabelProgress().textProperty().bind(task.messageProperty());
-
-            task.setOnSucceeded(e -> progressStage.close());
-            task.setOnCancelled(e -> progressStage.close());
-
-            // Установка действия для кнопки "Отмена"
-            progressBarController.getBtnCancel().setOnAction(e -> {
-                task.cancel();
-                progressBarController.cancelAnalysis();
-                Platform.runLater(() -> progressStage.close()); // Закрытие окна прогресса в JavaFX thread
-            });
-
-            // Запуск задачи в отдельном потоке
-            new Thread(task).start();
+            try {
+                rootTotalSpace = AnalyzerConductor.getDirectorySize(selectedDirectory);
+    
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("ProgressDialogAnalyzer.fxml"));
+                Parent root = loader.load();
+                ProgressBarController progressBarController = loader.getController();
+                Stage progressStage = new Stage();
+                progressStage.initModality(Modality.APPLICATION_MODAL);
+                progressStage.setScene(new Scene(root));
+                progressBarController.setStage(progressStage);
+                progressStage.setTitle("Feeler Manager. Загрузка...");
+                progressStage.setResizable(false);
+                progressStage.show();
+    
+                // Запуск задачи анализа
+                DiskAnalysisTask task = new DiskAnalysisTask(selectedDirectory, rootTotalSpace, directoryTreeView);
+                progressBarController.getProgressBar().progressProperty().bind(task.progressProperty());
+                progressBarController.getLabelProgress().textProperty().bind(task.messageProperty());
+    
+                task.setOnSucceeded(e -> progressStage.close());
+                task.setOnCancelled(e -> progressStage.close());
+    
+                // Установка действия для кнопки "Отмена"
+                progressBarController.getBtnCancel().setOnAction(e -> {
+                    task.cancel();
+                    progressBarController.cancelAnalysis();
+                    Platform.runLater(progressStage::close); // Закрытие окна прогресса в JavaFX thread
+                });
+    
+                // Запуск задачи в отдельном потоке
+                new Thread(task).start();
+    
+            } catch (Exception e) {
+                e.printStackTrace();
+                showAlertERROR("Feeler Manager. Ошибка", "Произошла ошибка при обработке файлов: " + e.getMessage());
+            }
+        } else {
+            showAlertERROR("Feeler Manager. Ошибка", "Выберите диск или папку");
         }
-    } catch (Exception e) {
-        e.printStackTrace();
-        System.out.println("Произошла ошибка при обработке файлов: " + e.getMessage());
-    }
     }
    
     /**
@@ -241,6 +240,14 @@ public class DiskAnalyzerConductorController {
      *    2.1. Реализовать код, который будет подгружать сначала родительские директории, а затем дочерние, 
      *         при открытии родительских
      * 
+     * 3. Написать код для очисти КЭШа при последующем запросе/нажатии кнопки "Отмена"/переходе на другую страницу.
+     * 
+     * ЕСТЬ 4. Написать исключения для системных директорий, чтобы алгоритм пропускал их.
+     * 
+     * ЕСТЬ 5. Работа с функцией, селать так, чтобы она запускалась фоном и не тормозила программу.
+     *    Или написать об этом в инструкции.
+     * 
+     * 6. При сканировании диска C возможны ошибки, программа не выводит данные, а прогресс бар зависает.
      */
     @FXML
     public void initialize() {

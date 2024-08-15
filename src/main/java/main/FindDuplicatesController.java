@@ -203,7 +203,7 @@ public class FindDuplicatesController {
             Stage progressStage = new Stage();
             progressStage.setScene(new Scene(progressBarLayout));
             progressBarController.setStage(progressStage);
-            progressStage.setTitle("Загрузка...");
+            progressStage.setTitle("Feeler Manager. Загрузка...");
             progressStage.show();
 
             task.setOnSucceeded(workerStateEvent -> {
@@ -403,6 +403,9 @@ public class FindDuplicatesController {
      * ЕСТЬ 9. Поработать над отображением размера файла
      * ЕСТЬ 10. В новом окне убрать кнопку "Открыть в новом окне" и убрать текст рядом с ней.
      *     В анализаторе сделать тоже самое
+     * 
+     * 11. Оптимизировать код, постараться сделать его быстрее
+     * 12. работа с прогресс баром, добиться того, чтобы он показывал прогресс в реальном времени
      */
     @FXML
     void initialize() {
